@@ -48,14 +48,14 @@ a akcie bere jako hazard.
 | Modelové částky | 10 000, 15 000 a 20 000 Kč měsíčně + jednorázově 500 000 Kč |
 | DIP | Úplně vynechat |
 | Osobní zkušenost | Ano, bez čísel (viz níže) |
-| Filmové příklady | Ano: Forrest Gump (Apple), Dožeň, co se dá (IBM, AT&T) + další, viz `research/filmy.md` |
+| Filmové příklady | Ano: Forrest Gump (Apple), Dožeň, co se dá! (IBM, AT&T, Polaroid) + další, viz `research/filmy.md` |
 | Interaktivní nástroje | Vlastní webové nástroje na **GitHub Pages** (viz níže) |
 
 ## Osobní příběh (bez čísel)
 
 - Investuji od roku 2019.
 - Motivace: zajištění na důchod, finanční nezávislost a filmy. Forrest Gump „investoval do nějaké ovocnářské
-  firmy“ (Apple), v Dožeň, co se dá otec investoval do IBM a AT&T, zavřel se na roky do krytu a syn
+  firmy“ (Apple), v Dožeň, co se dá! otec investoval do IBM a AT&T, zavřel se na roky do krytu a syn
   pak byl bohatý. Akcie zmíněné ve filmech od té doby dál rostou.
 - Styl: ETF + jednotlivé akcie.
 - Prošel jsem propady (2020, 2022, jaro 2025): držel jsem a přikupoval.

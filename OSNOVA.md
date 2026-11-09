@@ -10,7 +10,8 @@ Kostru tvoří čtyři námitky rodiny. Každá kapitola odpovídá na jednu z n
 ## 0. Úvod (~5 min)
 
 1. **Titul**: Jak nechat peníze pracovat
-2. **Forrest Gump**: „investoval do nějaké ovocnářské firmy“. Kolik by dnes měl? (háček na začátek)
+2. **Forrest Gump**: „investoval do nějaké ovocnářské firmy“ (Apple). 1 000 USD od premiéry 1994 je dnes
+   ≈ 1,5 mil. USD (háček na začátek, pointu doplníme v kap. 7)
 3. **Proč o tom mluvím**: investuji od 2019, důchod a nezávislost, filmy, které mě inspirovaly
 4. **Co se vám vybaví?**: čtyři námitky na jednom slajdu, dnes odpovím na každou
 5. **Inflace, tichý zloděj**: co dnes koupíte za 100 000 Kč z roku 2000
@@ -34,7 +35,7 @@ Kostru tvoří čtyři námitky rodiny. Každá kapitola odpovídá na jednu z n
 
 ## 3. Složené úročení (~7 min)
 
-17. **Sněhová koule**: úroky z úroků
+17. **Sněhová koule**: úroky z úroků. Futurama: Fry má 93 centů na účtu, za 1 000 let z nich je 4,3 mld. USD.
 18. **Naše částky**: 10 / 15 / 20 tis. Kč měsíčně po 10, 20 a 30 letech
 19. **Jednorázově 500 000 Kč**: co udělají naspořené peníze za 10, 20 a 30 let
 20. **Kdo začne dřív**: dva sourozenci, start ve 25 vs. ve 35 letech
@@ -51,6 +52,7 @@ Kostru tvoří čtyři námitky rodiny. Každá kapitola odpovídá na jednu z n
 25. **Srovnání 1, stejný trh, jen jiné poplatky**: 30 let po 15 tis. Kč, fond vs. ETF (rozdíl v statisících až milionech)
 26. **Srovnání 2, skutečný fond vs. S&P 500**: poctivě s poznámkou, že fond má hlavně dluhopisy (nižší riziko i výnos)
 27. 🔗 **Živě: spořák vs. MONETA vs. ETF**
+27b. **Buffettova sázka**: levný index (+126 %) proti profesionálům s vysokými poplatky (+3 až +88 %) za 10 let
 28. **I ETF má poplatek, jen 20× menší**: 0,07 % vs. 1,33 %. Říct otevřeně.
 29. **Řešení**: spravovat si to sám, levné ETF + broker bez poplatku z objemu
 
@@ -66,12 +68,16 @@ Kostru tvoří čtyři námitky rodiny. Každá kapitola odpovídá na jednu z n
 34. 🔗 **Živě: co kdybych investoval v roce X** (zkusit 2000 nebo 2007, tedy těsně před krachem)
 35. **Můj příběh**: 2020, 2022, jaro 2025, držel jsem a přikupoval
 36. **Kurzové riziko**: koruna vs. dolar
-37. **Proč index a ne jedna firma**: diverzifikace (např. Polaroid z filmu Dožeň, co se dá, pokud se potvrdí)
+37. **Proč index a ne jedna firma**: v Dožeň, co se dá! měl otec IBM, AT&T a Polaroid. Polaroid 2001
+    zkrachoval (→ 0 USD) a index s dividendami porazil všechny tři firmy. A ve Frekvenci zbohatnou na
+    Yahoo, které ve skutečnosti spadlo o 93 %. Pointa k Forrestovi: Apple taky dvakrát ztratil přes 80 %
+    a dopředu nevíte, jestli máte Apple, nebo Yahoo.
 38. **Největší riziko jste vy**: panika a prodej v propadu. A peníze potřebné do 5 let do akcií nepatří.
 
 ## 8. „Jsme na to staří“ (~2 min)
 
 39. **Horizont 55+**: 20–30 let života, peníze pro vnoučata, postupné rozložení
+    (příběh Grace Groner: sekretářka, 3 akcie a za život 7 mil. USD)
 
 ## 9. „Je to složité“: ve skutečnosti 3 kroky (~12–15 min)
 
@@ -83,6 +89,6 @@ Kostru tvoří čtyři námitky rodiny. Každá kapitola odpovídá na jednu z n
 
 ## 10. Závěr (~3 min)
 
-45. **Dožeň, co se dá**: otec zavřený v krytu a bohatý syn. Nejlepší strategie je nedělat nic.
+45. **Dožeň, co se dá!**: otec 35 let zavřený v krytu a bohatý syn. Nejlepší strategie je nedělat nic.
 46. **5 pravidel na lednici**: shrnutí
 47. **Otázky** + QR kód na kalkulačky
