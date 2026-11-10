@@ -40,6 +40,9 @@ a akcie bere jako hazard.
 | Vizuální styl | Ilustrativní a hravý: ikony, přirovnání z běžného života |
 | Nástroj | Index (ETF na S&P 500) jako základ + jednotlivé velké firmy |
 | Doporučený poměr | **50 % ETF / 50 % akcie velkých firem** |
+| ETF | **SPYL** (SPDR S&P 500 UCITS ETF Acc, IE000XZSV718, TER 0,03 %, akumulační) |
+| Nákup | XTB Investiční plán s automatickým měsíčním vkladem, akcie ve zlomcích |
+| Předpoklad výnosu | 9,5 % ročně v Kč (historie 30 let) vs. spořák 2 % (1,7 % po dani) |
 | Příklady firem | Firmy, které rodina sama používá (Apple, Google, Microsoft, Coca-Cola, McDonald's, Visa…) |
 | Broker | Kritéria výběru + srovnání 3–4 brokerů neutrálně, **živá ukázka na XTB** |
 | Rizika | Samostatná poctivá kapitola (propady, ztracená dekáda, kurzové riziko, psychologie) |
@@ -86,9 +89,9 @@ a `research/trh.md`.
   ročně. Osvobozené příjmy nad 5 mil. Kč je nutné oznámit finančnímu úřadu.
 - **Frakce (zlomky) akcií a ETF:** podle názoru GFŘ (mluvčí v médiích, žádný oficiální pokyn) se na
   frakci, kterou vlastní broker, časový test ani hodnotový test nevztahují. Lhůta běží až od vzniku celého
-  kusu. U XTB je vlastníkem frakce XTB a kompenzační systém ji nekryje. **Dopad na doporučení:** jednotlivé
-  akcie kupovat po celých kusech, u ETF zvážit fond s nízkou cenou jednotky. Ověřit, jestli Investiční plány
-  XTB nakupují frakce.
+  kusu. U XTB je vlastníkem frakce XTB a kompenzační systém ji nekryje. **Rozhodnutí (2026-11-10):**
+  ETF = **SPYL** (jednotka ~400 Kč, takže se kupují hlavně celé kusy), akcie přes **Investiční plán se zlomky**.
+  V prezentaci poctivě říct, že u zlomků se časový test počítá až od složení celého kusu.
 - **Dividendy časový test nepokrývá.** U US akcií se sráží 15 % (s W-8BEN, jinak 30 %). V ČR se zdaní
   15 % v samostatném základu (§ 16a) se zápočtem americké daně, takže v ČR se doplácí 0 Kč, ale
   přiznání podat nutné je (od roku 2027 hranice 40 tis. Kč pro zaměstnance). Akumulační ETF tohle řešení
@@ -102,8 +105,23 @@ a `research/trh.md`.
 - **Spořák velkých bank:** typicky 2 % před daní (1,7 % po dani). Bonusové sazby jsou jen s dalšími
   produkty banky. Úroky domácností z vkladů 2006–2025 byly v průměru ~1 %, reálně po dani a inflaci
   ~−2,4 % ročně. 100 000 Kč z roku 2000 má dnes kupní sílu ~45 500 Kč.
-- **Předpoklad výnosu akcií v Kč pro modelové příklady: 7 % ročně** (návrh, čeká na potvrzení). Historicky
-  bylo za 30 let 9,5 % v Kč. Nižší číslo kvůli vysokému ocenění trhu a posilující koruně.
+- **Předpoklad výnosu akcií v Kč pro modelové příklady: 9,5 % ročně** (rozhodnuto 2026-11-10). Je to
+  skutečný výnos S&P 500 s dividendami v Kč za posledních 30 let. Na slajdech vždy uvádět jako „kdyby se
+  opakovalo posledních 30 let“, ne jako slib. Do poznámek řečníka dát, že výhledy institucí jsou nižší
+  (J.P. Morgan ~7,5 %, Vanguard 4–5 %) a trh je dnes draze oceněný (CAPE ~41).
+- **Spořák pro modelové příklady: 2 % před daní, 1,7 % po dani.**
+
+### Modelové příklady (nominálně, 9,5 % vs. spořák 1,7 % po dani, v mil. Kč)
+
+| Částka | Roky | Vloženo | Akcie 9,5 % | Spořák 1,7 % |
+|---|---|---|---|---|
+| 10 000 Kč/měs | 10 / 20 / 30 | 1,20 / 2,40 / 3,60 | 1,95 / 6,77 / 18,73 | 1,31 / 2,85 / 4,68 |
+| 15 000 Kč/měs | 10 / 20 / 30 | 1,80 / 3,60 / 5,40 | 2,92 / 10,16 / 28,10 | 1,96 / 4,28 / 7,02 |
+| 20 000 Kč/měs | 10 / 20 / 30 | 2,40 / 4,80 / 7,20 | 3,89 / 13,55 / 37,46 | 2,61 / 5,70 / 9,36 |
+| 500 000 Kč jednorázově | 10 / 20 / 30 | 0,50 | 1,24 / 3,07 / 7,61 | 0,59 / 0,70 / 0,83 |
+
+Měsíční vklady na konci měsíce, měsíční úročení odvozené z ročního výnosu. Bez inflace (průměr ČR
+2001–2025 ~3,1 % ročně), bez poplatků a konverze měny. Vypočítají to i webové nástroje.
 - **Pro publikum 55+** je „desítky let“ stále reálný horizont (střední délka života, peníze pro
   vnoučata), ale peníze potřebné do ~5 let do akcií nepatří.
 - Všechna čísla (úroky spořáků, poplatky fondů, historické výnosy, statistiky SPIVA) dohledat

@@ -43,7 +43,7 @@ Kostru tvoří čtyři námitky rodiny. Každá kapitola odpovídá na jednu z n
 
 ## 4. Spořicí účet není investice (~5 min)
 
-22. **Realita spořáku velkých bank**: úrok, limit, podmínky, 15% daň, inflace → reálný výnos kolem nuly
+22. **Realita spořáku velkých bank**: ~2 % (bonus jen s dalšími produkty), limit, podmínky, 15% daň, inflace → reálný výnos kolem nuly
 23. **Kde má spořák místo**: finanční rezerva na 3–6 měsíců výdajů
 
 ## 5. Poplatky: poplatek z objemu je nepřítel (~7 min)
@@ -84,7 +84,7 @@ Kostru tvoří čtyři námitky rodiny. Každá kapitola odpovídá na jednu z n
 40. **3 kroky**: účet u brokera → trvalý příkaz → nedělat nic
 41. **Jak vybrat brokera**: regulace (ČNB/EU), garanční fond, žádný poplatek z objemu, čeština, daňový výpis
 42. **Srovnání brokerů**: XTB, Trading 212, Interactive Brokers, Fio e-Broker
-43. **Co koupit**: 50 % akumulační ETF na S&P 500 + 50 % velké firmy, které znáte
+43. **Co koupit**: 50 % ETF SPYL (S&P 500, akumulační, 0,03 %) + 50 % velké firmy, které znáte, vše v jednom Investičním plánu
 44. **ŽIVÁ UKÁZKA NA XTB**: otevření účtu, W-8BEN, ETF podle ISIN, nákup akcie, investiční plán / trvalý příkaz
 
 ## 10. Závěr (~3 min)
