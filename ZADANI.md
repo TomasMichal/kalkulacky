@@ -78,15 +78,32 @@ a akcie bere jako hazard.
 
 ## Faktické nuance, které musí prezentace podchytit
 
-- **Časový test** osvobozuje jen zisk z prodeje (3 roky držení). Od 2025 platí limit osvobození
-  40 mil. Kč příjmů ročně a hodnotový test 100 000 Kč ročně. *Ověřit aktuální stav.*
-- **Dividendy časový test nepokrývá.** U US akcií se sráží 15 % v USA (s formulářem W-8BEN)
-  a dividendy se uvádějí v daňovém přiznání. Akumulační ETF tohle řešení odstraňuje.
-  U poloviny portfolia v jednotlivých akciích bude potřeba dividendy přiznávat: zmínit u daní.
-- **ETF má také poplatek z objemu (TER)**, jen zhruba 20× menší (0,03–0,1 % vs. 1,33 % + vstupní 1,5 %).
+Ověřeno 2026-11-10, podrobnosti a zdroje v `research/cr-banky-dane.md`, `research/brokeri-etf.md`
+a `research/trh.md`.
+
+- **Časový test** osvobozuje zisk z prodeje po 3 letech držení. Limit 40 mil. Kč byl **od 1. 1. 2026
+  pro cenné papíry zrušen** (zůstal jen u kryptoměn). Hodnotový test: příjmy z prodeje (ne zisk) do 100 000 Kč
+  ročně. Osvobozené příjmy nad 5 mil. Kč je nutné oznámit finančnímu úřadu.
+- **Frakce (zlomky) akcií a ETF:** podle názoru GFŘ (mluvčí v médiích, žádný oficiální pokyn) se na
+  frakci, kterou vlastní broker, časový test ani hodnotový test nevztahují. Lhůta běží až od vzniku celého
+  kusu. U XTB je vlastníkem frakce XTB a kompenzační systém ji nekryje. **Dopad na doporučení:** jednotlivé
+  akcie kupovat po celých kusech, u ETF zvážit fond s nízkou cenou jednotky. Ověřit, jestli Investiční plány
+  XTB nakupují frakce.
+- **Dividendy časový test nepokrývá.** U US akcií se sráží 15 % (s W-8BEN, jinak 30 %). V ČR se zdaní
+  15 % v samostatném základu (§ 16a) se zápočtem americké daně, takže v ČR se doplácí 0 Kč, ale
+  přiznání podat nutné je (od roku 2027 hranice 40 tis. Kč pro zaměstnance). Akumulační ETF tohle řešení
+  odstraňuje. U poloviny portfolia v jednotlivých akciích to zmínit u daní.
+- **ETF má také poplatek z objemu (TER)**, jen zhruba 20× menší (0,03–0,07 % vs. 1,33 % + vstupní 1,5 %).
   Říct to otevřeně, jinak to někdo z rodiny později objeví a podkopá to důvěru.
-- **XTB**: nákup bez provize jen do 100 000 EUR měsíčně, **konverze měny 0,5 %** (při nákupu USD
-  aktiv z korunového účtu). Žádný poplatek z objemu ani za vedení účtu. Viz `research/produkty.md`.
+- **XTB**: nákup bez provize do 100 000 EUR měsíčně, **konverze měny 0,5 % při nákupu i prodeji**.
+  Bez poplatku z objemu do 250 000 EUR (nad to 0,02 % ročně). **W-8BEN se nevyplňuje automaticky**,
+  v ukázce ho vyplnit ručně. **Varovat před CFD:** 79 % retailových CFD účtů u XTB je ve ztrátě a položka
+  „S&P500“ v menu indexů je CFD, ne ETF.
+- **Spořák velkých bank:** typicky 2 % před daní (1,7 % po dani). Bonusové sazby jsou jen s dalšími
+  produkty banky. Úroky domácností z vkladů 2006–2025 byly v průměru ~1 %, reálně po dani a inflaci
+  ~−2,4 % ročně. 100 000 Kč z roku 2000 má dnes kupní sílu ~45 500 Kč.
+- **Předpoklad výnosu akcií v Kč pro modelové příklady: 7 % ročně** (návrh, čeká na potvrzení). Historicky
+  bylo za 30 let 9,5 % v Kč. Nižší číslo kvůli vysokému ocenění trhu a posilující koruně.
 - **Pro publikum 55+** je „desítky let“ stále reálný horizont (střední délka života, peníze pro
   vnoučata), ale peníze potřebné do ~5 let do akcií nepatří.
 - Všechna čísla (úroky spořáků, poplatky fondů, historické výnosy, statistiky SPIVA) dohledat

@@ -6,16 +6,19 @@ Zdroj: https://www.xtb.com/cz/ucet-a-poplatky (ceník odkazuje na tabulku poplat
 
 | Položka | Hodnota |
 |---|---|
-| Vedení účtu / úschova (custody) | 0 Kč, žádný poplatek z objemu majetku |
+| Vedení účtu / úschova (custody) | 0 Kč do 250 000 EUR. **Nad 250 000 EUR 0,02 % ročně z části nad limit** (PDF tabulka poplatků od 20. 10. 2026, viz `brokeri-etf.md`) |
 | Provize akcie a ETF | 0 % do 100 000 EUR měsíčního obratu, nad limit 0,2 % (min. 10 EUR) |
 | Konverze měny | **0,5 %** (když se měna účtu a cenného papíru liší) |
 | Minimální investice do akcie | 10 EUR |
 | Vklad | zdarma (CZK, EUR, USD) |
 | Výběr | zdarma |
-| Poplatek za neaktivitu | na ceníkové stránce neuveden. **Ověřit v PDF tabulce poplatků.** |
+| Poplatek za neaktivitu | 10 EUR/měsíc, jen když 365 dní žádný obchod, 90 dní žádný vklad a klient nic nedrží (PDF) |
 
-Závěr pro prezentaci: XTB si **nebere poplatek z objemu majetku**. Jediný reálný náklad pro rodinu
-je konverze měny 0,5 % při každém nákupu US aktiv z korunového účtu.
+Závěr pro prezentaci: XTB si do 250 000 EUR (≈ 6 mil. Kč) **nebere poplatek z objemu majetku** a nad
+limit je to jen 0,02 % ročně. Hlavní reálný náklad pro rodinu je **konverze měny 0,5 % při nákupu
+i prodeji** US aktiv z korunového účtu. Podrobnosti a srovnání brokerů jsou v `brokeri-etf.md`.
+
+**Oprava 2026-11-10:** původní tvrzení z 2026-11-09 „žádný poplatek za úschovu“ platí jen do 250 000 EUR.
 
 Další zdroje:
 - https://www.xtb.com/en/help-center/instruments/do-you-charge-commissions (limit za kalendářní měsíc)

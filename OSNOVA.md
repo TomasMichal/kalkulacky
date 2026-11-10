@@ -64,7 +64,7 @@ Kostru tvoří čtyři námitky rodiny. Každá kapitola odpovídá na jednu z n
 
 ## 7. „Při krachu přijdu o všechno“ (~7 min)
 
-33. **Velké propady**: 1929, 2000, 2008 (−50 %), 2020 (−34 %) a jejich zotavení
+33. **Velké propady**: 1929 (−86 %), 2000–02, 2007–09 (−57 %), 2020 (−34 %), 2022, jaro 2025 a jejich zotavení
 34. 🔗 **Živě: co kdybych investoval v roce X** (zkusit 2000 nebo 2007, tedy těsně před krachem)
 35. **Můj příběh**: 2020, 2022, jaro 2025, držel jsem a přikupoval
 36. **Kurzové riziko**: koruna vs. dolar
