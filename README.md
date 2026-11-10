@@ -18,6 +18,7 @@ Rodinná prezentace o dlouhodobém investování do amerických akcií a čtyři
 | `data/` | data ze Shillera, Damodarana a ČNB + vypočtené statistiky |
 | `scripts/` | stažení dat (`stahni_data.py`), příprava (`priprav_data.py`), statistiky (`statistiky.py`), export pro web (`export_web.py`) |
 | `docs/` | webové kalkulačky (GitHub Pages), čisté HTML/JS bez knihoven |
+| `prezentace/` | generátor PowerPointu (`vytvor.js`, pptxgenjs), výsledné `.pptx`, ilustrace |
 
 Obnovení dat: `python3 -I scripts/stahni_data.py && python3 -I scripts/priprav_data.py && python3 -I scripts/statistiky.py && python3 -I scripts/export_web.py`
 (první tři skripty potřebují virtuální prostředí `.venv` s pandas).
@@ -25,3 +26,7 @@ Obnovení dat: `python3 -I scripts/stahni_data.py && python3 -I scripts/priprav_
 Lokální spuštění kalkulaček: `python3 -m http.server --directory docs` a otevřít http://localhost:8000.
 
 *Nejde o investiční doporučení. Minulé výnosy nezaručují budoucí.*
+
+## Licence ilustrací
+
+Ilustrace v prezentaci (`prezentace/ilustrace/svg/`) jsou z [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) pod licencí MIT (`prezentace/ilustrace/svg/LICENSE`).
