@@ -65,6 +65,9 @@ a akcie bere jako hazard.
 
 ## Interaktivní nástroje (web, GitHub Pages)
 
+**Hotovo a zveřejněno 2026-11-10:** https://tomasmichal.github.io/kalkulacky/ (zdroj v `docs/`,
+data z `scripts/export_web.py`). Přepínač světlého/tmavého režimu vpravo nahoře, na TV raději světlý.
+
 1. **Kalkulačka složeného úročení**: předvyplněné 10/15/20 tis. Kč měsíčně a 500 tis. Kč jednorázově.
    (Alternativa: existující https://elementer.cz/nastroje/kalkulacka-slozeneho-uroceni/)
 2. **Spořák vs. MONETA 2 konzervativní vs. ETF**: stejná částka třemi cestami, včetně daní, poplatků a inflace.
