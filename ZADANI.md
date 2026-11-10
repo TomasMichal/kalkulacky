@@ -36,7 +36,7 @@ a akcie bere jako hazard.
 | Název | **Jak nechat peníze pracovat** |
 | Formát | PowerPoint (.pptx) |
 | Předání | Osobně na TV/projektoru: málo textu, velké vizuály, poznámky pro řečníka v každém slajdu |
-| Délka | 45+ minut včetně živé ukázky u brokera |
+| Délka | **~31 slajdů, ~40 minut** včetně živé ukázky (zkráceno z 55 slajdů 2026-11-10) |
 | Vizuální styl | Ilustrativní a hravý: ikony v kruzích, zaoblené karty, mince. Tmavě modrý titul, teplé světlé pozadí jako web |
 | Písmo | **Avenir Next** (nadpisy i text). Je na každém Macu a má češtinu. Arial Rounded MT Bold česká písmena nemá |
 | Generátor | `prezentace/vytvor.js` (pptxgenjs), `cd prezentace && npm run build` |
@@ -52,11 +52,11 @@ a akcie bere jako hazard.
 | Srovnání s fondem | Dvakrát odděleně: (1) stejný výnos trhu, rozdíl jen v poplatcích; (2) skutečný fond vs. S&P 500 |
 | Modelové částky | 10 000, 15 000 a 20 000 Kč měsíčně + jednorázově 500 000 Kč |
 | DIP | Úplně vynechat |
-| Osobní zkušenost | Ano, bez čísel (viz níže) |
+| Osobní zkušenost | **Ne na slajdech** (rozhodnuto 2026-11-10): prezentace nemá být zaměřená na mě, řeknu to v diskuzi |
 | Filmové příklady | Ano: Forrest Gump (Apple), Dožeň, co se dá! (IBM, AT&T, Polaroid) + další, viz `research/filmy.md` |
 | Interaktivní nástroje | Vlastní webové nástroje na **GitHub Pages** (viz níže) |
 
-## Osobní příběh (bez čísel)
+## Osobní příběh (jen do diskuze, ne na slajdy)
 
 - Investuji od roku 2019.
 - Motivace: zajištění na důchod, finanční nezávislost a filmy. Forrest Gump „investoval do nějaké ovocnářské

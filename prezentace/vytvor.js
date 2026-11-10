@@ -211,7 +211,12 @@ async function main() {
     return s;
   }
 
-  async function sekce(nazevSekce, { nadpis, podnadpis, obr, poznamky }) {
+  // Přechodové slajdy byly odstraněny (zkrácení), sekce jen zakládá oddíl v PowerPointu
+  async function sekce(nazevSekce) {
+    pres.addSection({ title: nazevSekce });
+    return null;
+  }
+  async function sekceSeSlajdem(nazevSekce, { nadpis, podnadpis, obr, poznamky }) {
     pres.addSection({ title: nazevSekce });
     const s = pres.addSlide({ masterName: "SEKCE", sectionTitle: nazevSekce });
     s.addText(nadpis, { placeholder: "title" });
@@ -291,29 +296,12 @@ async function main() {
     ));
   }
   {
-    const s = obsah("Úvod", "Proč o tom vůbec mluvím");
-    const karty = [
-      { obr: "spiral_calendar", barva: C.accent1, nadpis: "Investuji od roku 2019", text: "Každý měsíc do ETF a k tomu do jednotlivých velkých firem." },
-      { obr: "roller_coaster", barva: C.accent2, nadpis: "Zažil jsem tři propady", text: "2020, 2022 i jaro 2025. Nic jsem neprodal, naopak jsem přikupoval." },
-      { obr: "umbrella", barva: C.accent3, nadpis: "Chci klidný důchod a svobodu", text: "Nechci spoléhat jen na státní důchod a chci mít jednou volbu, jestli pracovat." },
-      { obr: "clapper_board", barva: C.accent4, nadpis: "Inspirovaly mě filmy", text: "Forrest Gump nebo Dožeň, co se dá!: akcie z filmů opravdu dál rostly." },
-    ];
-    for (const [i, k] of karty.entries()) {
-      await kartaSObrazkem(s, { x: 0.6 + (i % 2) * 6.15, y: 1.6 + Math.floor(i / 2) * 2.55, w: 5.95, h: 2.3, ...k });
-    }
-    s.addNotes(body(
-      "Osobní příběh bez čísel: investuji od 2019, ETF + jednotlivé akcie.",
-      "Prošel jsem propady 2020, 2022 a jaro 2025, držel jsem a přikupoval.",
-      "Motivace: důchod, finanční nezávislost, filmy.",
-    ));
-  }
-  {
     const s = obsah("Úvod", "Co se vám vybaví, když se řekne akcie?");
     const karty = [
-      { obr: "slot_machine", barva: C.accent2, nadpis: "„Je to hazard, kasino.“", text: "Odpověď v části Je to hazard?" },
-      { obr: "roller_coaster", barva: C.accent6, nadpis: "„Při krachu přijdu o všechno.“", text: "Odpověď v části Co když přijde krach?" },
-      { obr: "thinking_face", barva: C.accent5, nadpis: "„Nerozumím tomu, je to složité.“", text: "Odpověď v části Jak začít (jsou to 3 kroky)." },
-      { obr: "old_woman", barva: C.accent3, nadpis: "„Nemáme na to, jsme na to staří.“", text: "Odpověď v částech Sněhová koule a Nejsme na to staří?" },
+      { obr: "slot_machine", barva: C.accent2, nadpis: "„Je to hazard, kasino.“", text: "Podíváme se na data za 155 let." },
+      { obr: "roller_coaster", barva: C.accent6, nadpis: "„Při krachu přijdu o všechno.“", text: "Krach přijde. Ukážeme, co bylo potom." },
+      { obr: "thinking_face", barva: C.accent5, nadpis: "„Nerozumím tomu, je to složité.“", text: "Ve skutečnosti jsou to 3 kroky." },
+      { obr: "old_woman", barva: C.accent3, nadpis: "„Nemáme na to, jsme na to staří.“", text: "Stačí málo peněz a trocha času." },
     ];
     for (const [i, k] of karty.entries()) {
       await kartaSObrazkem(s, { x: 0.6 + (i % 2) * 6.15, y: 1.6 + Math.floor(i / 2) * 2.55, w: 5.95, h: 2.3, ...k });
@@ -346,37 +334,26 @@ async function main() {
   await sekce("Co jsou akcie", { nadpis: "Co vlastně jsou akcie?", podnadpis: "„Nerozumím tomu.“ Je to jednodušší, než to vypadá.", obr: "bread", poznamky: ["Začneme úplně od základu."] });
   {
     const s = obsah("Co jsou akcie", "Akcie = kousek firmy");
-    await obrazek(s, "bread", 0.9, 1.7, 2.3);
-    // Pekárna rozdělená na 20 dílů, jeden je váš
+    karta(s, { x: 0.6, y: 1.6, w: 5.95, h: 4.75, barva: C.accent4, nazev: "Pekárna" });
+    await obrazek(s, "bread", 0.85, 1.8, 1.3);
     for (let i = 0; i < 20; i++) {
-      const x = 3.6 + (i % 5) * 0.62, y = 1.85 + Math.floor(i / 5) * 0.62;
-      s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y, w: 0.52, h: 0.52, rectRadius: 0.08, fill: { color: i === 7 ? C.accent4 : C.text2 }, line: { type: "none" }, objectName: `Díl ${i + 1}` });
+      const x = 2.55 + (i % 5) * 0.5, y = 1.85 + Math.floor(i / 5) * 0.5;
+      s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y, w: 0.42, h: 0.42, rectRadius: 0.07, fill: { color: i === 7 ? C.accent4 : C.text2 }, line: { type: "none" }, objectName: `Díl ${i + 1}` });
     }
-    T(s, "váš díl", { x: 3.6, y: 4.4, w: 3.0, h: 0.4, fontSize: 15, bold: true, color: C.text2 });
-    karta(s, { x: 7.0, y: 1.6, w: 5.7, h: 4.65, barva: C.accent4, nazev: "Pekárna" });
     T(s, [
-      { text: "Představte si pekárnu rozdělenou na 20 dílů.", options: { bold: true, breakLine: true } },
+      { text: "Pekárna rozdělená na 20 dílů.", options: { bold: true, breakLine: true } },
       { text: " ", options: { breakLine: true, fontSize: 8 } },
-      { text: "Koupíte jeden díl a vlastníte 1/20 pekárny.", options: { breakLine: true } },
+      { text: "Koupíte jeden díl (zlatý) a vlastníte 1/20 pekárny i 1/20 jejího zisku.", options: { breakLine: true } },
       { text: " ", options: { breakLine: true, fontSize: 8 } },
-      { text: "Když pekárna vydělá, 1/20 zisku patří vám.", options: { breakLine: true } },
-      { text: " ", options: { breakLine: true, fontSize: 8 } },
-      { text: "Velké firmy mají dílů miliardy. Princip je ale úplně stejný: akcie je kousek skutečné firmy." },
-    ], { x: 7.4, y: 1.9, w: 4.9, h: 4.1, fontSize: 19 });
-    s.addNotes(body(
-      "Akcie není los ani sázka. Je to vlastnický podíl ve skutečné firmě.",
-      "Pekárna: 20 dílů, máte jeden, máte nárok na 1/20 zisku.",
-    ));
-  }
-  {
-    const s = obsah("Co jsou akcie", "Jak akcie vydělává");
-    await kartaSObrazkem(s, { x: 0.6, y: 2.4, w: 3.6, h: 2.6, barva: C.accent4, obr: "factory", nadpis: "Firma vydělá zisk", text: "Prodává věci a služby, které lidé denně kupují." });
-    s.addShape(pres.shapes.RIGHT_ARROW, { x: 4.4, y: 3.4, w: 0.9, h: 0.6, fill: { color: C.text2 }, line: { type: "none" }, objectName: "Šipka" });
-    await kartaSObrazkem(s, { x: 5.5, y: 1.6, w: 7.2, h: 2.1, barva: C.accent3, obr: "money_bag", nadpis: "Dividenda", text: "Část zisku vám firma pošle. U akumulačního ETF se automaticky investuje znovu." });
-    await kartaSObrazkem(s, { x: 5.5, y: 3.95, w: 7.2, h: 2.1, barva: C.accent1, obr: "chart_increasing", nadpis: "Růst hodnoty", text: "Zbytek zisku firma investuje do svého růstu. Firma má větší cenu, a tak i váš díl." });
+      { text: "Velké firmy mají dílů miliardy, princip je stejný." },
+    ], { x: 0.95, y: 4.0, w: 5.3, h: 2.2, fontSize: 18 });
+    T(s, "Jak na tom vyděláte", { x: 6.85, y: 1.6, w: 5.8, h: 0.45, fontSize: 18, bold: true });
+    await kartaSObrazkem(s, { x: 6.75, y: 2.15, w: 5.95, h: 2.0, barva: C.accent3, obr: "money_bag", nadpis: "Dividenda", text: "Část zisku vám firma pošle. Akumulační ETF ji samo investuje znovu." });
+    await kartaSObrazkem(s, { x: 6.75, y: 4.35, w: 5.95, h: 2.0, barva: C.accent1, obr: "chart_increasing", nadpis: "Růst hodnoty", text: "Zbytek zisku firma investuje do růstu. Firma má větší cenu, a tak i váš díl." });
     zdroj(s, `S&P 500 s dividendami vynášel od roku 1928 v průměru ${des1.format(FAKTA.vynosOd1928)} % ročně, po odečtení inflace ${des1.format(FAKTA.vynosOd1928Realne)} % (A. Damodaran, NYU).`);
     s.addNotes(body(
-      "Dva zdroje výnosu: dividendy a růst hodnoty firmy.",
+      "Akcie není los ani sázka. Je to vlastnický podíl ve skutečné firmě.",
+      "Vyděláváte dvakrát: dividendy a růst hodnoty firmy.",
       "Dlouhodobě S&P 500 asi 10 % ročně (od 1928), po inflaci 6,8 %.",
     ));
   }
@@ -402,21 +379,6 @@ async function main() {
     ));
   }
   {
-    const s = obsah("Co jsou akcie", "Burza: krátkodobě nálady, dlouhodobě zisky");
-    await kartaSObrazkem(s, { x: 0.6, y: 1.6, w: 5.95, h: 3.0, barva: C.accent2, obr: "roller_coaster", nadpis: "Den po dni", text: "Cenu hýbou zprávy, strach a chamtivost. Proto akcie každý den skáčou nahoru a dolů." });
-    await kartaSObrazkem(s, { x: 6.75, y: 1.6, w: 5.95, h: 3.0, barva: C.accent3, obr: "seedling", nadpis: "Za roky a desetiletí", text: "Rozhoduje, kolik firmy skutečně vydělávají. A to dlouhodobě roste." });
-    karta(s, { x: 0.6, y: 4.85, w: 12.1, h: 1.5, nazev: "Citát" });
-    await obrazek(s, "balance_scale", 0.85, 5.0, 1.2);
-    T(s, [
-      { text: "„Krátkodobě je trh hlasovací stroj, dlouhodobě váha.“", options: { bold: true, breakLine: true } },
-      { text: "Benjamin Graham, učitel Warrena Buffetta", options: { fontSize: 15, color: C.text2 } },
-    ], { x: 2.3, y: 5.05, w: 10.1, h: 1.1, fontSize: 21, valign: "middle" });
-    s.addNotes(body(
-      "Krátkodobé výkyvy jsou normální a nic neznamenají.",
-      "Dlouhodobě cena následuje zisky firem.",
-    ));
-  }
-  {
     const s = obsah("Co jsou akcie", "Index a ETF: celý koš firem jedním nákupem");
     await obrazek(s, "basket", 0.8, 1.8, 2.8);
     const radky = [
@@ -433,22 +395,7 @@ async function main() {
     s.addNotes(body(
       "Nemusíte vybírat jednotlivé firmy. ETF na S&P 500 = celý koš najednou.",
       "Index se sám obměňuje: slabé firmy vypadnou, nové silné přibudou.",
-    ));
-  }
-  {
-    const s = obsah("Co jsou akcie", "Proč zrovna americké akcie");
-    const karty = [
-      { obr: "globe_with_meridians", barva: C.accent1, nadpis: "Největší trh světa", text: "Největší a nejlépe obchodovaný akciový trh na světě." },
-      { obr: "package", barva: C.accent4, nadpis: "Prodávají všude", text: "Americké firmy vydělávají po celém světě, i na nás v Česku." },
-      { obr: "bar_chart", barva: C.accent3, nadpis: "Nejdelší historie", text: "Data máme od roku 1871. Víme, jak se trh choval v krizích i válkách." },
-    ];
-    for (const [i, k] of karty.entries()) await kartaSObrazkem(s, { x: 0.6 + i * 4.1, y: 1.6, w: 3.9, h: 2.9, ...k });
-    karta(s, { x: 0.6, y: 4.75, w: 12.1, h: 1.6, barva: C.accent1, nazev: "Výnos" });
-    T(s, `${des1.format(FAKTA.vynosKc30)}${NB}% ročně`, { x: 0.95, y: 4.9, w: 4.4, h: 1.3, fontSize: 44, bold: true, fontFace: THEME.headFontFace, valign: "middle" });
-    T(s, "Tolik v průměru vydělal index S&P 500 za posledních 30 let, přepočteno na koruny a s dividendami.", { x: 5.4, y: 4.95, w: 7.0, h: 1.2, fontSize: 18, valign: "middle" });
-    s.addNotes(body(
-      "USA: největší trh, globální firmy, nejdelší data.",
-      "30 let v Kč: 9,5 % ročně (research/trh.md). Minulost ale nezaručuje budoucnost.",
+      "Proč USA: největší trh, firmy prodávají po celém světě, data od 1871. Za 30 let 9,5 % ročně v Kč.",
     ));
   }
 
@@ -508,56 +455,6 @@ async function main() {
     ));
   }
   await zive("Je to hazard?", { nadpis: "Vyzkoušejte si: je to hazard?", popis: "Posuňte jezdcem délku držení a sledujte, jak šance na ztrátu klesá.", stranka: "pravdepodobnost-ztraty.html", obr: "game_die", poznamky: ["Otevřít kalkulačku, posunout z 1 dne na 20 let.", "Přepnout „Po odečtení inflace“."] });
-  {
-    const s = obsah("Je to hazard?", "Spekulace není investování");
-    const karty = [
-      { obr: "chart_decreasing", barva: C.accent6, cislo: `${FAKTA.dayTradeBrazilie} %`, text: "brazilských day-traderů, kteří to zkoušeli aspoň 300 dní, prodělalo." },
-      { obr: "slot_machine", barva: C.accent2, cislo: `${FAKTA.cfdXtb} %`, text: "účtů drobných investorů u XTB prodělává na CFD, tedy na sázkách na pohyb ceny." },
-      { obr: "popcorn", barva: C.accent4, cislo: "Filmy", text: "Vlk z Wall Street nebo Sázka na nejistotu: spekulace končí ve filmech i v životě špatně." },
-    ];
-    for (const [i, k] of karty.entries()) await kartaSObrazkem(s, { x: 0.6 + i * 4.1, y: 1.6, w: 3.9, h: 3.3, velikostCisla: 40, velikostTextu: 17, ...k });
-    karta(s, { x: 0.6, y: 5.15, w: 12.1, h: 1.2, barva: C.accent1, nazev: "Rozdíl" });
-    T(s, [
-      { text: "Spekulant ", options: { bold: true } }, { text: "sází, kam se cena pohne zítra.   " },
-      { text: "Investor ", options: { bold: true } }, { text: "kupuje kousky firem a drží je desítky let." },
-    ], { x: 0.95, y: 5.3, w: 11.4, h: 0.9, fontSize: 19, valign: "middle" });
-    zdroj(s, "Chague, De Losso, Giovannetti (Brazílie); varování XTB k CFD (listopad 2026); ESMA: na CFD prodělává 74–89 % účtů.");
-    s.addNotes(body(
-      "Day-trading a CFD jsou opravdu hazard: 97 % prodělá, u XTB 79 % CFD účtů.",
-      "My děláme opak: kupujeme a držíme.",
-    ));
-  }
-  {
-    const s = obsah("Je to hazard?", "Ani profesionálové neporazí index");
-    T(s, "Kolik aktivně řízených fondů zaostalo za indexem S&P 500", { x: 0.6, y: 1.45, w: 8.0, h: 0.4, bold: true });
-    s.addChart(pres.charts.BAR, [{ name: "Zaostalo", labels: FAKTA.spiva.map(([t]) => t), values: FAKTA.spiva.map(([, v]) => v) }], graf({
-      x: 0.5, y: 1.95, w: 8.1, h: 4.6, barDir: "col", chartColors: [HEX.accent2], dataLabelFontSize: 22, catAxisLabelFontSize: 18,
-      valAxisMinVal: 0, valAxisMaxVal: 100, dataLabelFormatCode: '0" %"', objectName: "Graf SPIVA",
-    }));
-    await kartaSObrazkem(s, { x: 8.95, y: 1.6, w: 3.8, h: 2.3, barva: C.accent2, obr: "brain", nadpis: "Placení experti", text: "Analytici, počítače, data. A stejně většinou prohrají." });
-    await kartaSObrazkem(s, { x: 8.95, y: 4.15, w: 3.8, h: 2.3, barva: C.accent3, obr: "money_with_wings", nadpis: "A ještě si zaplatíte", text: "Za horší výsledek platíte vyšší poplatky než za index." });
-    zdroj(s, "SPIVA U.S. Mid-Year 2026 (S&P Dow Jones Indices): aktivně řízené fondy velkých amerických firem.");
-    s.addNotes(body(
-      "Za 10 let zaostalo 83 % profesionálních fondů, za 20 let asi 93 %.",
-      "Když to neumí profíci, nemá smysl se o to snažit. Stačí index.",
-      "20 let: zdroje uvádějí 92,6–92,9 %, ověřeno přes S&P a sekundární zdroje.",
-    ));
-  }
-  {
-    const s = obsah("Je to hazard?", "Kdo vyskočí z vlaku, zmešká nejlepší dny");
-    T(s, "10 000 USD v S&P 500 za posledních 20 let (tis. USD)", { x: 0.6, y: 1.45, w: 8.0, h: 0.4, bold: true });
-    s.addChart(pres.charts.BAR, [{ name: "Hodnota", labels: FAKTA.zmeskaneDny.map(([t]) => t), values: FAKTA.zmeskaneDny.map(([, v]) => v) }], graf({
-      x: 0.5, y: 1.95, w: 8.1, h: 4.6, barDir: "col", chartColors: [HEX.accent1, HEX.accent2, HEX.accent2, HEX.accent2],
-      dataLabelFontSize: 20, catAxisLabelFontSize: 14, valAxisMinVal: 0, valAxisMaxVal: 90, dataLabelFormatCode: '0" tis."', objectName: "Graf zmeškaných dnů",
-    }));
-    await kartaSObrazkem(s, { x: 8.95, y: 1.6, w: 3.8, h: 2.75, barva: C.accent2, obr: "face_screaming_in_fear", cislo: "6 z 10", velikostCisla: 36, text: "nejlepších dnů přišlo do 2 týdnů od těch nejhorších." });
-    await kartaSObrazkem(s, { x: 8.95, y: 4.6, w: 3.8, h: 1.85, barva: C.accent1, obr: "stopwatch", nadpis: "Neodhadnete to", text: "Kdo v panice prodá, ty nejlepší dny prošvihne." });
-    zdroj(s, "S dividendami, 9. 11. 2006 – 9. 11. 2026, výpočet z dat Yahoo Finance. Shoduje se s J.P. Morgan Guide to Retirement 2026.");
-    s.addNotes(body(
-      "Celou dobu investovaný: 80 tis. USD. Bez 10 nejlepších dnů 36 tis., bez 30 jen 14 tis.",
-      "Nejlepší dny přicházejí hned po nejhorších. Kdo prodá ze strachu, zmešká je.",
-    ));
-  }
 
   /* ======================= SNĚHOVÁ KOULE ======================= */
   await sekce("Sněhová koule", { nadpis: "Sněhová koule", podnadpis: "„Nemáme na to.“ Malé částky a hodně času udělají divy.", obr: "snowman", poznamky: ["Složené úročení: nejdůležitější myšlenka dnešního večera."] });
@@ -627,53 +524,6 @@ async function main() {
     ));
   }
   {
-    const s = obsah("Sněhová koule", "A co jiné částky?");
-    const castky = [10000, 15000, 20000], roky = [10, 20, 30];
-    const hlavicka = [{ text: "Měsíčně", options: { bold: true, color: C.background1, fill: { color: HEX.dk2 } } },
-      ...roky.map((r) => ({ text: `za ${r} let`, options: { bold: true, color: C.background1, fill: { color: HEX.dk2 }, align: "center" } }))];
-    const radky = castky.map((m) => [
-      { text: kc(m), options: { bold: true, fontSize: 20 } },
-      ...roky.map((r) => ({
-        text: [
-          { text: milKc(budouciHodnota(m, r, AKCIE)), options: { bold: true, fontSize: 22, breakLine: true } },
-          { text: `vloženo ${milKc(m * 12 * r)}`, options: { fontSize: 13, color: C.text2 } },
-        ], options: { align: "center" },
-      })),
-    ]);
-    s.addTable([hlavicka, ...radky], {
-      x: 0.6, y: 1.65, w: 12.1, colW: [2.8, 3.1, 3.1, 3.1], rowH: [0.6, 1.25, 1.25, 1.25],
-      fontSize: 18, color: C.text1, valign: "middle", fill: { color: HEX.lt1 },
-      border: { type: "solid", pt: 1, color: "E1E0D9" }, margin: 0.12, objectName: "Tabulka částek",
-    });
-    zdroj(s, "Akcie 9,5 % ročně (S&P 500 v Kč za posledních 30 let), vklad na konci měsíce, bez poplatků a inflace. Minulé výnosy nezaručují budoucí.");
-    s.addNotes(body(
-      "Každý si najde svou částku. I 10 000 Kč měsíčně dá za 30 let přes 18 mil. Kč.",
-      "Spočítat vlastní částku: kalkulačka složeného úročení.",
-    ));
-  }
-  {
-    const s = obsah("Sněhová koule", "Naspořených 500 000 Kč: spořák, nebo akcie?");
-    for (const [i, r] of [10, 20, 30].entries()) {
-      const x = 0.6 + i * 4.1;
-      karta(s, { x, y: 1.6, w: 3.9, h: 4.75, nazev: `Za ${r} let` });
-      T(s, `Za ${r} let`, { x: x + 0.3, y: 1.8, w: 3.3, h: 0.55, fontSize: 24, bold: true });
-      await obrazek(s, "bank", x + 0.3, 2.55, 0.7);
-      T(s, "Spořák", { x: x + 1.15, y: 2.55, w: 2.4, h: 0.35, fontSize: 15, color: C.text2 });
-      T(s, milKc(500000 * Math.pow(1 + SPORAK * (1 - DAN_UROKY), r)), { x: x + 1.15, y: 2.85, w: 2.5, h: 0.5, fontSize: 24, bold: true, fontFace: THEME.headFontFace });
-      s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: x + 0.2, y: 3.7, w: 3.5, h: 2.4, rectRadius: 0.18, fill: { color: C.accent1, transparency: 86 }, line: { type: "none" }, objectName: `Akcie ${r}` });
-      await obrazek(s, "rocket", x + 0.3, 3.9, 0.7);
-      T(s, "Akcie", { x: x + 1.15, y: 3.9, w: 2.4, h: 0.35, fontSize: 15, color: C.text2 });
-      T(s, milKc(500000 * Math.pow(1 + AKCIE, r)), { x: x + 0.35, y: 4.65, w: 3.2, h: 0.9, fontSize: 38, bold: true, fontFace: THEME.headFontFace, valign: "middle" });
-      T(s, `${des1.format(Math.pow(1 + AKCIE, r))}× víc, než jste vložili`, { x: x + 0.35, y: 5.5, w: 3.2, h: 0.4, fontSize: 14, color: C.text2 });
-    }
-    zdroj(s, "Spořák 2 % (po dani 1,7 %), akcie 9,5 % ročně (S&P 500 v Kč za posledních 30 let). Bez poplatků a inflace.");
-    s.addNotes(body(
-      "Pro rodiče s úsporami: 500 000 Kč jednorázově.",
-      "Za 20 let: spořák 0,7 mil., akcie 3,1 mil. Kč.",
-      "Peníze potřebné do 5 let do akcií nepatří (rezerva zůstává na spořáku).",
-    ));
-  }
-  {
     const s = obsah("Sněhová koule", "Kdo začne dřív, vyhraje: Anna a Petr");
     const mesicne = 10000;
     const anna = budouciHodnota(mesicne, 10, AKCIE) * Math.pow(1 + AKCIE, 30);
@@ -720,7 +570,7 @@ async function main() {
       T(s, banka, { x: 1.6, y: y + 0.15, w: 2.8, h: 0.65, fontSize: 18, bold: true, valign: "middle" });
       T(s, urok, { x: 4.2, y: y + 0.15, w: 2.7, h: 0.65, fontSize: 22, bold: true, align: "right", valign: "middle", fontFace: THEME.headFontFace });
     }
-    T(s, "Vyšší bonusový úrok jen když si koupíte další produkty banky. Z úroku si stát vezme 15 %.", { x: 0.6, y: 5.45, w: 6.5, h: 0.85, fontSize: 15, color: C.text2 });
+    T(s, [{ text: "Bonus jen s dalšími produkty banky, z úroku 15 % daň. " }, { text: "Spořák je dobrý na rezervu (3–6 měsíců výdajů), ne na majetek.", options: { bold: true } }], { x: 0.6, y: 5.4, w: 6.5, h: 0.95, fontSize: 15, color: C.text2 });
     karta(s, { x: 7.4, y: 1.6, w: 5.3, h: 4.75, barva: C.accent6, nazev: "Reálný výnos" });
     await obrazek(s, "chart_decreasing", 7.7, 1.85, 1.0);
     T(s, `${des1.format(FAKTA.vkladyRealne).replace("-", "−")}${NB}% ročně`, { x: 7.7, y: 3.0, w: 4.8, h: 1.0, fontSize: 48, bold: true, fontFace: THEME.headFontFace, valign: "middle" });
@@ -730,25 +580,6 @@ async function main() {
       "Velké banky: ČS 0,2–0,75 %, KB 1–2,5 %, ČSOB 2,75 % do 250 tis.",
       "Bonusy (až 5,2 %) jen s investicemi, pojištěním nebo úvěrem u banky.",
       "Za 20 let vklady reálně ztrácely 2,4 % ročně.",
-    ));
-  }
-  {
-    const s = obsah("Spořák, poplatky a daně", "Kde má spořák své místo");
-    await obrazek(s, "umbrella", 0.9, 1.8, 2.8);
-    const radky = [
-      ["Rezerva na nečekané výdaje", "3–6 měsíců výdajů. Rozbité auto, nemoc, ztráta práce."],
-      ["Peníze potřebné do 5 let", "Na auto, rekonstrukci nebo dovolenou. Ty do akcií nepatří."],
-      ["Jistota vkladu", "Vklady v bance jsou pojištěné do 100 000 EUR. Fondy a ETF ne, ty ale nejsou majetkem brokera."],
-    ];
-    for (const [i, [nadpis, text]] of radky.entries()) {
-      const y = 1.6 + i * 1.6;
-      karta(s, { x: 4.3, y, w: 8.4, h: 1.4, barva: C.accent3, nazev: nadpis });
-      T(s, nadpis, { x: 4.6, y: y + 0.15, w: 7.8, h: 0.5, fontSize: 19, bold: true });
-      T(s, text, { x: 4.6, y: y + 0.65, w: 7.8, h: 0.65, fontSize: 16 });
-    }
-    s.addNotes(body(
-      "Spořák není špatný, jen má jinou roli: rezerva a krátkodobé peníze.",
-      "Na dlouhodobý majetek (10+ let) patří akcie.",
     ));
   }
   {
@@ -763,13 +594,14 @@ async function main() {
       { text: `${kc(5e6 * FAKTA.monetaTer)} ročně`, options: { bold: true } },
       { text: ", ať se fondu daří, nebo ne.", options: { breakLine: true } },
       { text: " ", options: { breakLine: true, fontSize: 8 } },
-      { text: `Fond má navíc jen asi ${FAKTA.monetaAkcie} % v akciích, zbytek hlavně v dluhopisech.` },
+      { text: `I ETF má poplatek, ale 0,03 %: z 5 mil. Kč jen ${kc(5e6 * FAKTA.spylTer)} ročně.` },
     ], { x: 4.75, y: 4.35, w: 7.7, h: 1.85, fontSize: 18 });
     zdroj(s, "Dokument s klíčovými informacemi (KID) fondu MONETA 2 konzervativní z 1. 4. 2026, ISIN IE000VHJLW78.");
     s.addNotes(body(
       "Vstupní poplatek 1,5 % + 1,33 % ročně z celého majetku.",
       "To je poplatek z objemu: platíte z celé částky, každý rok.",
       "Fond má ~23 % akcií, proto je i jeho výnos nižší.",
+      "Poctivě: i ETF bere poplatek z objemu (TER), ale 44× menší. XTB navíc 0,5 % za převod měny.",
     ));
   }
   {
@@ -801,33 +633,6 @@ async function main() {
       "Stejná simulace jako v kalkulačce Spořák vs. fond vs. ETF (včetně časového testu).",
     ));
   }
-  {
-    const s = obsah("Spořák, poplatky a daně", "Skutečné produkty: kolik by zbylo za 30 let");
-    const zadani = { mesicni: 15000, pocetLet: 30 };
-    const sporak = produkt({ ...zadani, rust: SPORAK * (1 - DAN_UROKY), danZisku: 0 });
-    const fond = produkt({ ...zadani, rust: (1 + FAKTA.monetaCil) / (1 - FAKTA.monetaTer) - 1, naklady: FAKTA.monetaTer, vstupni: FAKTA.monetaVstup });
-    const etf = produkt({ ...zadani, rust: AKCIE, naklady: FAKTA.spylTer, konverze: FAKTA.konverzeXtb });
-    T(s, [{ text: "15 000 Kč měsíčně po dobu 30 let", options: { bold: true } }, { text: `   ·   vložíte ${milKc(sporak.vlozeno)}` }], { x: 0.6, y: 1.4, w: 12.1, h: 0.45, fontSize: 20 });
-    const karty = [
-      { obr: "bank", barva: C.accent3, nazev: "Spořák", popis: "2 % před daní", h: sporak },
-      { obr: "mouse_face", barva: C.accent2, nazev: "Fond MONETA", popis: "4 % po nákladech (střed cíle fondu)", h: fond },
-      { obr: "rocket", barva: C.accent1, nazev: "ETF na S&P 500", popis: "9,5 %, jako posledních 30 let", h: etf },
-    ];
-    for (const [i, k] of karty.entries()) {
-      const x = 0.6 + i * 4.1;
-      karta(s, { x, y: 2.05, w: 3.9, h: 3.6, barva: k.barva, nazev: k.nazev });
-      await obrazek(s, k.obr, x + 0.3, 2.25, 0.9);
-      T(s, k.nazev, { x: x + 1.35, y: 2.3, w: 2.4, h: 0.8, fontSize: 19, bold: true, valign: "middle" });
-      T(s, milKc(k.h.hodnota), { x: x + 0.3, y: 3.35, w: 3.4, h: 1.0, fontSize: 40, bold: true, fontFace: THEME.headFontFace, valign: "middle" });
-      T(s, k.popis, { x: x + 0.3, y: 4.45, w: 3.4, h: 0.9, fontSize: 15, color: C.text2 });
-    }
-    zdroj(s, "Fond má jen ~23 % akcií, má tedy nižší výkyvy i nižší očekávaný výnos. S&P 500 je minulost, ne slib. Včetně poplatků a daní.");
-    s.addNotes(body(
-      `Spořák ${milKc(sporak.hodnota)}, MONETA ${milKc(fond.hodnota)}, ETF ${milKc(etf.hodnota)}.`,
-      "Poctivě: fond je konzervativní (hlavně dluhopisy), má menší výkyvy. Rozdíl není jen poplatky.",
-      "Na desítky let ale akcie jasně vedou.",
-    ));
-  }
   await zive("Spořák, poplatky a daně", { nadpis: "Spořák vs. fond vs. ETF", popis: "Zadejte své úspory a uvidíte, kolik spolknou poplatky a daně.", stranka: "sporak-fond-etf.html", obr: "money_with_wings", poznamky: ["Zkusit 500 000 Kč jednorázově a 20 let.", "Přepnout „Stejný trh“ a „Skutečné produkty“."] });
   {
     const s = obsah("Spořák, poplatky a daně", "Buffettova sázka: levný index proti profesionálům");
@@ -845,80 +650,17 @@ async function main() {
     ));
   }
   {
-    const s = obsah("Spořák, poplatky a daně", "I ETF má poplatek, jen 44× menší");
-    const priklady = [
-      { obr: "rocket", barva: C.accent1, nazev: "ETF SPYL", sazba: FAKTA.spylTer, popis: "ročně z celého majetku" },
-      { obr: "mouse_face", barva: C.accent2, nazev: "Fond MONETA", sazba: FAKTA.monetaTer, popis: "ročně + 1,5 % z každého vkladu" },
-    ];
-    for (const [i, p] of priklady.entries()) {
-      const x = 0.6 + i * 6.25;
-      karta(s, { x, y: 1.6, w: 5.85, h: 3.2, barva: p.barva, nazev: p.nazev });
-      await obrazek(s, p.obr, x + 0.3, 1.85, 0.9);
-      T(s, p.nazev, { x: x + 1.4, y: 1.9, w: 4.2, h: 0.8, fontSize: 22, bold: true, valign: "middle" });
-      T(s, pct(p.sazba, 2), { x: x + 0.35, y: 2.85, w: 5.2, h: 1.0, fontSize: 54, bold: true, fontFace: THEME.headFontFace, valign: "middle" });
-      T(s, p.popis, { x: x + 0.35, y: 3.9, w: 5.2, h: 0.5, fontSize: 16, color: C.text2 });
-    }
-    karta(s, { x: 0.6, y: 5.05, w: 12.1, h: 1.3, nazev: "Příklad" });
-    T(s, [
-      { text: "Z 1 milionu korun zaplatíte ročně ", options: {} },
-      { text: `${kc(1e6 * FAKTA.spylTer)} v ETF`, options: { bold: true } },
-      { text: ", nebo ", options: {} },
-      { text: `${kc(1e6 * FAKTA.monetaTer)} ve fondu.`, options: { bold: true } },
-    ], { x: 0.95, y: 5.15, w: 11.4, h: 1.1, fontSize: 21, valign: "middle" });
+    const s = obsah("Spořák, poplatky a daně", "Daně: po 3 letech z akcií nic");
+    await kartaSObrazkem(s, { x: 0.6, y: 1.6, w: 5.95, h: 2.25, barva: C.accent3, obr: "hourglass_done", cislo: "3 roky", text: "Držíte déle než 3 roky? Zisk z prodeje je bez daně. Spořák platí 15 % z každého úroku." });
+    await kartaSObrazkem(s, { x: 6.75, y: 1.6, w: 5.95, h: 2.25, barva: C.accent1, obr: "money_bag", cislo: "100 000 Kč", text: "Prodeje do 100 000 Kč za rok jsou bez daně vždy, i před 3 lety." });
+    await kartaSObrazkem(s, { x: 0.6, y: 4.1, w: 5.95, h: 2.25, barva: C.accent3, obr: "check_mark_button", nadpis: "Akumulační ETF", text: "Dividendy fond sám investuje znovu. Dokud neprodáte, nic nepřiznáváte." });
+    await kartaSObrazkem(s, { x: 6.75, y: 4.1, w: 5.95, h: 2.25, barva: C.accent4, obr: "memo", nadpis: "Jednotlivé akcie", text: "Formulář W-8BEN (15 % místo 30 % z dividend), dividendy do přiznání. U zlomků akcií běží 3 roky až od celého kusu." });
+    zdroj(s, "§ 4 zákona o daních z příjmů (stav 2026), smlouva o zamezení dvojího zdanění s USA. Zlomky: názor GFŘ, oficiální pokyn není.");
     s.addNotes(body(
-      "Poctivě: i ETF bere poplatek z objemu (TER), ale 0,03 % místo 1,33 %.",
-      "Z milionu 300 Kč ročně místo 13 300 Kč.",
-      "U brokera XTB navíc 0,5 % za převod korun na dolary (při nákupu i prodeji).",
-    ));
-  }
-  {
-    const s = obsah("Spořák, poplatky a daně", "Řešení: spravovat si to sám");
-    const kroky = [
-      { obr: "basket", barva: C.accent1, nadpis: "Levné ETF", text: "Index S&P 500 za 0,03 % ročně místo 1–2 % ve fondu." },
-      { obr: "mobile_phone", barva: C.accent4, nadpis: "Broker bez poplatku z objemu", text: "Žádné procento z majetku za vedení účtu ani úschovu." },
-      { obr: "sleeping_face", barva: C.accent3, nadpis: "Pár minut ročně", text: "Automatický měsíční nákup. Žádný poradce, žádné provize." },
-    ];
-    for (const [i, k] of kroky.entries()) await kartaSObrazkem(s, { x: 0.6 + i * 4.1, y: 1.6, w: 3.9, h: 3.4, velikostTextu: 17, ...k });
-    karta(s, { x: 0.6, y: 5.25, w: 12.1, h: 1.1, barva: C.accent3, nazev: "Pointa" });
-    T(s, "Každá koruna, kterou neplatíte na poplatcích, pracuje pro vás.", { x: 0.95, y: 5.25, w: 11.4, h: 1.1, fontSize: 21, bold: true, valign: "middle" });
-    s.addNotes(body(
-      "Neplatit poplatek z objemu ani za aktivní správu.",
-      "Konkrétní postup ukážu na konci (Jak začít).",
-    ));
-  }
-  {
-    const s = obsah("Spořák, poplatky a daně", "Časový test: po 3 letech bez daně");
-    await kartaSObrazkem(s, { x: 0.6, y: 1.6, w: 5.95, h: 2.6, barva: C.accent3, obr: "hourglass_done", cislo: "3 roky", text: "Držíte akcie nebo ETF déle než 3 roky? Zisk z prodeje je osvobozený od daně. Od roku 2026 bez horního limitu." });
-    await kartaSObrazkem(s, { x: 6.75, y: 1.6, w: 5.95, h: 2.6, barva: C.accent1, obr: "money_bag", cislo: "100 000 Kč", text: "Prodeje do 100 000 Kč za rok jsou osvobozené vždy, i před 3 lety." });
-    karta(s, { x: 0.6, y: 4.45, w: 12.1, h: 1.9, barva: C.accent2, nazev: "Spořák" });
-    await obrazek(s, "bank", 0.85, 4.7, 0.9);
-    T(s, [
-      { text: "Spořák: ", options: { bold: true } },
-      { text: "z každého úroku stát hned strhne 15 %, každý rok, bez výjimky.", options: { breakLine: true } },
-      { text: "Akcie po 3 letech: ", options: { bold: true } },
-      { text: "0 % ze zisku." },
-    ], { x: 2.0, y: 4.6, w: 10.4, h: 1.6, fontSize: 20, valign: "middle" });
-    zdroj(s, "§ 4 zákona o daních z příjmů (stav pro rok 2026), Finanční správa. Ověřeno 10. 11. 2026.");
-    s.addNotes(body(
-      "Časový test 3 roky: zisk z prodeje osvobozen. Limit 40 mil. Kč od 2026 zrušen.",
+      "Časový test 3 roky: zisk z prodeje osvobozen, od 2026 bez limitu 40 mil. Kč.",
       "Hodnotový test: tržby z prodeje do 100 000 Kč ročně osvobozeny.",
-      "Spořák: 15 % z každého úroku.",
-    ));
-  }
-  {
-    const s = obsah("Spořák, poplatky a daně", "Dividendy a papírování");
-    await kartaSObrazkem(s, { x: 0.6, y: 1.6, w: 5.95, h: 3.4, barva: C.accent3, obr: "check_mark_button", nadpis: "Akumulační ETF",
-      text: "Dividendy fond sám znovu investuje. Dokud neprodáte, nic nepřiznáváte. Žádné papírování.", velikostTextu: 18 });
-    await kartaSObrazkem(s, { x: 6.75, y: 1.6, w: 5.95, h: 3.4, barva: C.accent4, obr: "memo", nadpis: "Jednotlivé akcie",
-      text: "Vyplnit formulář W-8BEN: v USA se strhne 15 % místo 30 %. V Česku se už nic nedoplácí, ale dividendy patří do přiznání.", velikostTextu: 18 });
-    karta(s, { x: 0.6, y: 5.25, w: 12.1, h: 1.1, barva: C.accent2, nazev: "Zlomky" });
-    await obrazek(s, "warning", 0.85, 5.35, 0.85);
-    T(s, "Zlomky akcií (třeba Apple za 1 000 Kč): časový test se podle finanční správy počítá až od chvíle, kdy máte celý kus.", { x: 1.9, y: 5.3, w: 10.5, h: 1.0, fontSize: 16, valign: "middle" });
-    zdroj(s, "Finanční správa, smlouva o zamezení dvojího zdanění s USA; povinnost přiznání za rok 2026 nad 20 000 Kč, od roku 2027 nad 40 000 Kč (zaměstnanci).");
-    s.addNotes(body(
-      "ETF SPYL je akumulační: nic se nepřiznává.",
-      "Jednotlivé akcie: W-8BEN (u XTB vyplnit ručně), dividendy do přiznání, doplatek 0 Kč.",
-      "Zlomky: názor GFŘ, oficiální pokyn neexistuje.",
+      "Akumulační ETF SPYL: žádné papírování. Jednotlivé akcie: W-8BEN (u XTB vyplnit ručně), dividendy do přiznání, doplatek 0 Kč.",
+      "Přiznání za 2026 nutné nad 20 000 Kč ostatních příjmů (zaměstnanci), od 2027 nad 40 000 Kč.",
     ));
   }
 
@@ -931,62 +673,31 @@ async function main() {
       x: 0.5, y: 1.95, w: 8.6, h: 4.6, barDir: "bar", chartColors: [HEX.accent6], catAxisOrientation: "maxMin",
       dataLabelFontSize: 18, catAxisLabelFontSize: 15, valAxisMinVal: 0, valAxisMaxVal: 100, dataLabelFormatCode: '"−"0" %"', objectName: "Graf propadů",
     }));
-    await kartaSObrazkem(s, { x: 9.35, y: 1.6, w: 3.4, h: 4.85, barva: C.accent3, obr: "seedling", nadpis: "Pravidelně", text: `V „ztracené dekádě“ 2000–2009 skončila jednorázová investice na −${Math.abs(FAKTA.dekadaJednorazove)} %. Kdo kupoval každý měsíc, byl na +${FAKTA.dekadaPravidelne} %. Levné nákupy v krizi se vyplatily.` });
+    await kartaSObrazkem(s, { x: 9.35, y: 1.6, w: 3.4, h: 2.35, barva: C.accent3, obr: "seedling", nadpis: "Pravidelně", text: `2000–2009 jednorázově −${Math.abs(FAKTA.dekadaJednorazove)} %, každý měsíc +${FAKTA.dekadaPravidelne} %.`, velikostTextu: 14 });
+    await kartaSObrazkem(s, { x: 9.35, y: 4.1, w: 3.4, h: 2.35, barva: C.accent5, obr: "globe_with_meridians", nadpis: "Pozor na kurz", text: `V korunách 2000–2009 až −${FAKTA.kcPropad2000} %. Za 30 let jen ${des1.format(FAKTA.vynosKc30)} % v Kč vs. ${des1.format(FAKTA.vynosUsd30)} % v USD.`, velikostTextu: 14 });
     zdroj(s, "1929–2009 s dividendami (Shiller), 2020–2025 cenový index (Yahoo Finance). Výpočet scripts/statistiky.py.");
     s.addNotes(body(
       "Krachy přijdou, to je jisté. 1929 −84 %, 2008 −55 %, covid −34 %.",
       "Po každém se trh vrátil. Kdo vydržel, neprodělal.",
-      "Pravidelné investování nakupuje v krizi levně.",
+      "Pravidelné investování nakupuje v krizi levně (ztracená dekáda: −9 % vs. +7 %).",
+      "Kurzové riziko: kupujeme dolarová aktiva. Krátkodobě může bolet (2000–2009 v Kč −72 %, návrat 12/2014), dlouhodobě malý vliv.",
     ));
   }
   await zive("Co když přijde krach?", { nadpis: "Co kdybych investoval těsně před krachem?", popis: "Zkusíme rok 2000 nebo 2007 a uvidíme nejhorší chvíli i výsledek dnes.", stranka: "co-kdyby.html", obr: "crystal_ball", poznamky: ["Scénář „Vrchol internetové bubliny (2000)“ → Každý měsíc.", "Pak „Těsně před krachem (1929)“."] });
   {
-    const s = obsah("Co když přijde krach?", "Moje propady: co jsem udělal");
-    const propady = [
-      { rok: "2020", nazev: "Covid", propad: "−34 %", obr: "face_screaming_in_fear" },
-      { rok: "2022", nazev: "Inflace a úroky", propad: "−25 %", obr: "chart_decreasing" },
-      { rok: "Jaro 2025", nazev: "Cla a nejistota", propad: "−19 %", obr: "roller_coaster" },
-    ];
-    for (const [i, p] of propady.entries()) {
-      const x = 0.6 + i * 4.1;
-      karta(s, { x, y: 1.6, w: 3.9, h: 2.9, barva: C.accent6, nazev: p.rok });
-      await obrazek(s, p.obr, x + 0.3, 1.85, 0.9);
-      T(s, p.rok, { x: x + 1.35, y: 1.9, w: 2.4, h: 0.5, fontSize: 22, bold: true });
-      T(s, p.nazev, { x: x + 1.35, y: 2.4, w: 2.4, h: 0.4, fontSize: 15, color: C.text2 });
-      T(s, p.propad, { x: x + 0.3, y: 3.0, w: 3.3, h: 1.0, fontSize: 48, bold: true, fontFace: THEME.headFontFace, valign: "middle" });
-    }
-    karta(s, { x: 0.6, y: 4.75, w: 12.1, h: 1.6, barva: C.accent3, nazev: "Co jsem udělal" });
-    await obrazek(s, "check_mark_button", 0.9, 5.05, 1.0);
-    T(s, [
-      { text: "Nic jsem neprodal a dál nakupoval. ", options: { bold: true } },
-      { text: "Po každém propadu se trh vrátil a nákupy z krize patří k mým nejlepším." },
-    ], { x: 2.2, y: 4.85, w: 10.2, h: 1.4, fontSize: 20, valign: "middle" });
+    const s = obsah("Je to hazard?", "Kdo vyskočí z vlaku, zmešká nejlepší dny");
+    T(s, "10 000 USD v S&P 500 za posledních 20 let (tis. USD)", { x: 0.6, y: 1.45, w: 8.0, h: 0.4, bold: true });
+    s.addChart(pres.charts.BAR, [{ name: "Hodnota", labels: FAKTA.zmeskaneDny.map(([t]) => t), values: FAKTA.zmeskaneDny.map(([, v]) => v) }], graf({
+      x: 0.5, y: 1.95, w: 8.1, h: 4.6, barDir: "col", chartColors: [HEX.accent1, HEX.accent2, HEX.accent2, HEX.accent2],
+      dataLabelFontSize: 20, catAxisLabelFontSize: 14, valAxisMinVal: 0, valAxisMaxVal: 90, dataLabelFormatCode: '0" tis."', objectName: "Graf zmeškaných dnů",
+    }));
+    await kartaSObrazkem(s, { x: 8.95, y: 1.6, w: 3.8, h: 2.75, barva: C.accent2, obr: "face_screaming_in_fear", cislo: "6 z 10", velikostCisla: 36, text: "nejlepších dnů přišlo do 2 týdnů od těch nejhorších." });
+    await kartaSObrazkem(s, { x: 8.95, y: 4.6, w: 3.8, h: 1.85, barva: C.accent1, obr: "stopwatch", nadpis: "Riziko jste vy", text: "Kdo v panice prodá, zmešká nejlepší dny." });
+    zdroj(s, "S dividendami, 9. 11. 2006 – 9. 11. 2026, výpočet z dat Yahoo Finance. Shoduje se s J.P. Morgan Guide to Retirement 2026.");
     s.addNotes(body(
-      "Osobní zkušenost: tři propady za 6 let, vždy jsem držel a přikupoval.",
-      "Bez konkrétních čísel portfolia.",
-    ));
-  }
-  {
-    const s = obsah("Co když přijde krach?", "Koruna vs. dolar: další horská dráha");
-    const roky = new Map();
-    const rok0 = Number(usdczk.od.slice(0, 4));
-    usdczk.kurz.forEach((k, i) => { const r = rok0 + Math.floor(i / 12); if (!roky.has(r)) roky.set(r, []); roky.get(r).push(k); });
-    const radky = [...roky.entries()].map(([r, k]) => [r, k.reduce((a, b) => a + b, 0) / k.length]);
-    const max = radky.reduce((a, b) => (b[1] > a[1] ? b : a));
-    const min = radky.reduce((a, b) => (b[1] < a[1] ? b : a));
-    T(s, "Kolik korun stál 1 dolar (roční průměr)", { x: 0.6, y: 1.45, w: 8.0, h: 0.4, bold: true });
-    s.addChart(pres.charts.LINE, [{ name: "Kč za 1 USD", labels: radky.map(([r]) => (r % 5 === 0 ? String(r) : "")), values: radky.map(([, k]) => Math.round(k * 10) / 10) }], {
-      x: 0.5, y: 1.95, w: 8.1, h: 4.6, chartColors: [HEX.accent5], lineSize: 3, lineDataSymbol: "none",
-      catAxisLabelFontFace: "+mn-lt", catAxisLabelFontSize: 13, catAxisLabelColor: HEX.dk1, catAxisLabelRotate: 0, catAxisLineColor: "C3C2B7",
-      valAxisLabelFontFace: "+mn-lt", valAxisLabelFontSize: 13, valAxisLabelColor: HEX.dk1, valAxisMinVal: 10, valAxisMaxVal: 40, valAxisMajorUnit: 10,
-      valAxisLabelFormatCode: '0" Kč"', valGridLine: { color: "E1E0D9", size: 1 }, catGridLine: { style: "none" }, showLegend: false, objectName: "Graf kurzu",
-    });
-    await kartaSObrazkem(s, { x: 8.95, y: 1.6, w: 3.8, h: 2.35, barva: C.accent5, obr: "globe_with_meridians", nadpis: "Kurz kolísá", text: `Od ${cele.format(max[1])} Kč (${max[0]}) po ${cele.format(min[1])} Kč (${min[0]}) za dolar.` });
-    await kartaSObrazkem(s, { x: 8.95, y: 4.2, w: 3.8, h: 2.25, barva: C.accent3, obr: "turtle", nadpis: "Za 30 let vliv malý", text: `${des1.format(FAKTA.vynosKc30)} % ročně v Kč, ${des1.format(FAKTA.vynosUsd30)} % v dolarech.` });
-    zdroj(s, `Kurzy ČNB. Pozor: kdo koupil v roce 2000, byl v korunách v roce 2009 na −${FAKTA.kcPropad2000} % a vrátil se až v prosinci 2014.`);
-    s.addNotes(body(
-      "Kupujeme americké akcie, takže hraje roli i kurz koruny.",
-      "Krátkodobě může kurz bolet (2000–2009 v Kč −72 %), dlouhodobě je vliv malý (9,5 % vs. 10,2 %).",
+      "Celou dobu investovaný: 80 tis. USD. Bez 10 nejlepších dnů 36 tis., bez 30 jen 14 tis.",
+      "Nejlepší dny přicházejí hned po nejhorších. Kdo prodá ze strachu, zmešká je.",
+      "Největší riziko je panika. Proto rezerva na spořáku a peníze na 5 let mimo akcie.",
     ));
   }
   {
@@ -1003,25 +714,6 @@ async function main() {
       "Pointa k Forrestovi: dopředu nevíte, jestli máte Apple, nebo Yahoo.",
       "Index vyhraje nad většinou jednotlivých firem a nikdy nezkrachuje celý.",
       "Proto je ETF základ, jednotlivé firmy jen doplněk.",
-    ));
-  }
-  {
-    const s = obsah("Co když přijde krach?", "Největší riziko jste vy");
-    await obrazek(s, "face_screaming_in_fear", 0.9, 1.8, 2.6);
-    const radky = [
-      ["Neprodávat v panice", "Propad je výprodej. Kdo prodá, z dočasné ztráty udělá skutečnou."],
-      ["Nesledovat denně", "Den po dni je to hod mincí. Stačí se podívat jednou za čas."],
-      ["Mít rezervu", "Peníze na 5 let dopředu a rezerva na spořáku. Pak nemusíte prodávat v krizi."],
-    ];
-    for (const [i, [nadpis, text]] of radky.entries()) {
-      const y = 1.6 + i * 1.6;
-      karta(s, { x: 4.3, y, w: 8.4, h: 1.4, barva: C.accent1, nazev: nadpis });
-      T(s, nadpis, { x: 4.6, y: y + 0.15, w: 7.8, h: 0.5, fontSize: 19, bold: true });
-      T(s, text, { x: 4.6, y: y + 0.65, w: 7.8, h: 0.65, fontSize: 16 });
-    }
-    s.addNotes(body(
-      "Trh vám peníze nevezme. Vezme vám je vlastní panika.",
-      "Proto rezerva a peníze na krátkodobé cíle mimo akcie.",
     ));
   }
   {
@@ -1065,25 +757,6 @@ async function main() {
     s.addNotes(body(
       "Investování nemusí být složité. Složité je vydržet nic nedělat.",
     ));
-  }
-  {
-    const s = obsah("Jak začít", "Jak vybrat brokera");
-    const kriteria = [
-      ["shield", "Regulace v EU", "Dohled centrální banky a ochrana investora při krachu brokera."],
-      ["money_with_wings", "Žádný poplatek z objemu", "Nic za vedení účtu ani úschovu. Nákup bez provize."],
-      ["mobile_phone", "Čeština a jednoduchá aplikace", "Ať se v tom vyznáte i bez angličtiny."],
-      ["spiral_calendar", "Automatické investování", "Každý měsíc nakoupí samo podle plánu."],
-      ["memo", "Podklady pro daně", "Roční přehled pro daňové přiznání."],
-    ];
-    for (const [i, [obr, nadpis, text]] of kriteria.entries()) {
-      const sloupec = i < 3 ? 0 : 1, radek = i < 3 ? i : i - 3;
-      const x = 0.6 + sloupec * 6.15, y = 1.6 + radek * 1.6;
-      karta(s, { x, y, w: 5.95, h: 1.4, barva: C.accent1, nazev: nadpis });
-      await obrazek(s, obr, x + 0.25, y + 0.25, 0.9);
-      T(s, nadpis, { x: x + 1.35, y: y + 0.15, w: 4.4, h: 0.5, fontSize: 18, bold: true });
-      T(s, text, { x: x + 1.35, y: y + 0.65, w: 4.4, h: 0.65, fontSize: 14 });
-    }
-    s.addNotes(body("Pět kritérií. Nejdůležitější: žádný poplatek z objemu."));
   }
   {
     const s = obsah("Jak začít", "Srovnání brokerů");
@@ -1132,7 +805,7 @@ async function main() {
     T(s, "Apple, Microsoft, Alphabet, Coca-Cola, McDonald's, Visa…", { x: 6.2, y: 5.55, w: 6.3, h: 0.6, fontSize: 15 });
     zdroj(s, "Obojí v jednom Investičním plánu XTB s automatickým měsíčním vkladem. Nejde o investiční doporučení.");
     s.addNotes(body(
-      "Můj návrh: 50 % ETF SPYL, 50 % velké firmy, které znáte.",
+      "Návrh: 50 % ETF SPYL, 50 % velké firmy, které znáte.",
       "Kdo chce úplně jednoduše a bezpečněji, může dát 100 % do ETF.",
       "Zlomky akcií: časový test až od celého kusu (viz Dividendy).",
     ));
@@ -1164,18 +837,6 @@ async function main() {
 
   /* ======================= ZÁVĚR ======================= */
   pres.addSection({ title: "Závěr" });
-  {
-    const s = obsah("Závěr", "Dožeň, co se dá! Nejlepší strategie je vydržet");
-    await obrazek(s, "clapper_board", 0.9, 1.8, 2.6);
-    karta(s, { x: 4.3, y: 1.6, w: 8.4, h: 2.6, barva: C.accent4, nazev: "Příběh" });
-    T(s, "Otec se v roce 1962 zavřel s rodinou do krytu a 35 let nic nedělal. Jeho akcie mezitím rostly. Syn pak vylezl a byl bohatý.", { x: 4.65, y: 1.85, w: 7.8, h: 2.1, fontSize: 20, valign: "middle" });
-    karta(s, { x: 4.3, y: 4.45, w: 8.4, h: 1.9, barva: C.accent3, nazev: "Ponaučení" });
-    T(s, [
-      { text: "Největší nepřítel výnosu je nervozita. ", options: { bold: true } },
-      { text: "Nakoupit, pravidelně přidávat a nechat to být. (S indexem by dopadl ještě líp.)" },
-    ], { x: 4.65, y: 4.6, w: 7.8, h: 1.6, fontSize: 19, valign: "middle" });
-    s.addNotes(body("Návrat k filmu z úvodu: kryt = nedívat se na trh. Index by byl ještě lepší."));
-  }
   {
     const s = obsah("Závěr", "5 pravidel na ledničku");
     const pravidla = [
