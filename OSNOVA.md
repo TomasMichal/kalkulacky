@@ -1,4 +1,7 @@
-# Osnova: „Jak nechat peníze pracovat“ (návrh v2)
+# Osnova: „Jak nechat peníze pracovat“ (v2)
+
+**Stav 2026-11-10:** prezentace je vygenerovaná v `prezentace/jak-nechat-penize-pracovat.pptx` (55 slajdů:
+obsah podle této osnovy + 6 přechodových slajdů + 4 slajdy s QR kódy na kalkulačky). Generátor `prezentace/vytvor.js`.
 
 Prezentace 26. 11. 2026, osobně na TV. Cíl je ~35 slajdů + živá ukázka ≈ 50–60 minut.
 Každý slajd = jedna myšlenka, jeden velký vizuál. Detaily a zdroje jdou do poznámek řečníka.
@@ -53,7 +56,7 @@ Kostru tvoří čtyři námitky rodiny. Každá kapitola odpovídá na jednu z n
 26. **Srovnání 2, skutečný fond vs. S&P 500**: poctivě s poznámkou, že fond má hlavně dluhopisy (nižší riziko i výnos)
 27. 🔗 **Živě: spořák vs. MONETA vs. ETF**
 27b. **Buffettova sázka**: levný index (+126 %) proti profesionálům s vysokými poplatky (+3 až +88 %) za 10 let
-28. **I ETF má poplatek, jen 20× menší**: 0,07 % vs. 1,33 %. Říct otevřeně.
+28. **I ETF má poplatek, jen 44× menší**: 0,03 % (SPYL) vs. 1,33 %. Říct otevřeně.
 29. **Řešení**: spravovat si to sám, levné ETF + broker bez poplatku z objemu
 
 ## 6. Daně (~4 min)
