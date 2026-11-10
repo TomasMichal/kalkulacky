@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Spořák vs. fond vs. ETF</title>
+  <meta name="description" content="Stejné peníze třemi cestami: spořicí účet, fond MONETA 2 konzervativní a ETF na S&amp;P 500. Kolik stojí poplatky a daně.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styl.css">
+  <script src="assets/tema.js"></script>
+  <style>
+    .predpoklady { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px 20px; margin-top: 12px; }
+    .predpoklady .pole input { font-size: 17px; padding: 8px 40px 8px 12px; }
+    .predpoklady h3 { grid-column: 1 / -1; margin: 6px 0 0; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+    .predpoklady h3 .klic { width: 12px; height: 12px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <main class="obal">
+    <div class="hlavicka">
+      <a class="zpet" href="./">← Všechny kalkulačky</a>
+      <span class="vpravo"><span class="znacka">Jak nechat peníze pracovat</span><button class="prepinac-tematu" type="button" hidden></button></span>
+    </div>
+    <h1>Spořák vs. fond vs. ETF</h1>
+    <p class="uvod">Stejné peníze třemi cestami: spořicí účet velké banky, fond MONETA 2 konzervativní
+      a ETF na americký index S&amp;P 500 koupené přes brokera. Kolik vám nakonec zůstane a kolik spolknou
+      poplatky a daně?</p>
+
+    <section class="karta" aria-labelledby="nadpis-zadani">
+      <h2 id="nadpis-zadani" class="skryte">Zadání</h2>
+      <div class="ovladani">
+        <div class="pole">
+          <label for="jednorazove">Na začátku vložím jednorázově</label>
+          <div class="s-jednotkou"><input id="jednorazove" type="text" value="500000"><span class="jednotka">Kč</span></div>
+          <div class="volby" id="volby-jednorazove" aria-label="Rychlá volba jednorázového vkladu">
+            <button data-hodnota="0">0</button>
+            <button data-hodnota="500000" aria-pressed="true">500 000</button>
+          </div>
+        </div>
+        <div class="pole">
+          <label for="mesicne">Každý měsíc vložím</label>
+          <div class="s-jednotkou"><input id="mesicne" type="text" value="10000"><span class="jednotka">Kč</span></div>
+          <div class="volby" id="volby-mesicne" aria-label="Rychlá volba měsíční částky">
+            <button data-hodnota="0">0</button>
+            <button data-hodnota="10000" aria-pressed="true">10 000</button>
+            <button data-hodnota="15000">15 000</button>
+            <button data-hodnota="20000">20 000</button>
+          </div>
+        </div>
+        <div class="pole">
+          <div class="radek-popisku"><label for="roky">Jak dlouho</label><span class="hodnota" id="roky-text"></span></div>
+          <input id="roky" type="range" min="1" max="40" step="1" value="20">
+        </div>
+        <div class="pole">
+          <span class="popisek" id="popisek-rezim">Jak srovnávat</span>
+          <div class="volby" id="volby-rezim" role="group" aria-labelledby="popisek-rezim">
+            <button data-hodnota="stejny" aria-pressed="true">Stejný trh, jen jiné poplatky</button>
+            <button data-hodnota="skutecny">Skutečné produkty</button>
+          </div>
+          <p class="napoveda" id="rezim-napoveda"></p>
+        </div>
+      </div>
+      <p style="margin:18px 0 0">
+        <label class="zaskrtavatko"><input type="checkbox" id="inflace">Ukázat v dnešních penězích (odečíst inflaci 3,1 % ročně)</label>
+      </p>
+      <details class="tabulka">
+        <summary>Upravit předpoklady</summary>
+        <div class="predpoklady">
+          <h3><span class="klic" style="background:var(--s3)"></span>Spořicí účet</h3>
+          <div class="pole"><label for="p-sporak">Úrok před daní</label><div class="s-jednotkou"><input id="p-sporak" type="text" value="2"><span class="jednotka">%</span></div></div>
+          <div class="pole"><label for="p-dan-uroky">Srážková daň z úroků</label><div class="s-jednotkou"><input id="p-dan-uroky" type="text" value="15"><span class="jednotka">%</span></div></div>
+
+          <h3><span class="klic" style="background:var(--s2)"></span>Fond MONETA 2 konzervativní</h3>
+          <div class="pole"><label for="p-fond-vstup">Vstupní poplatek z každého vkladu</label><div class="s-jednotkou"><input id="p-fond-vstup" type="text" value="1,5"><span class="jednotka">%</span></div></div>
+          <div class="pole"><label for="p-fond-naklady">Roční náklady z celého majetku</label><div class="s-jednotkou"><input id="p-fond-naklady" type="text" value="1,33"><span class="jednotka">%</span></div></div>
+          <div class="pole jen-skutecny-pole"><label for="p-fond-vynos">Výnos fondu po nákladech (skutečné produkty)</label><div class="s-jednotkou"><input id="p-fond-vynos" type="text" value="4"><span class="jednotka">%</span></div></div>
+
+          <h3><span class="klic" style="background:var(--s1)"></span>ETF na S&amp;P 500 (SPYL přes XTB)</h3>
+          <div class="pole"><label for="p-etf-naklady">Roční náklady ETF</label><div class="s-jednotkou"><input id="p-etf-naklady" type="text" value="0,03"><span class="jednotka">%</span></div></div>
+          <div class="pole"><label for="p-konverze">Převod korun na dolary (nákup i prodej)</label><div class="s-jednotkou"><input id="p-konverze" type="text" value="0,5"><span class="jednotka">%</span></div></div>
+          <div class="pole jen-skutecny-pole"><label for="p-etf-vynos">Výnos S&amp;P 500 (skutečné produkty)</label><div class="s-jednotkou"><input id="p-etf-vynos" type="text" value="9,5"><span class="jednotka">%</span></div></div>
+
+          <h3>Stejný trh</h3>
+          <div class="pole"><label for="p-trh">Výnos trhu pro fond i ETF</label><div class="s-jednotkou"><input id="p-trh" type="text" value="6"><span class="jednotka">%</span></div></div>
+          <div class="pole"><label for="p-dan-zisk">Daň ze zisku při prodeji do 3 let</label><div class="s-jednotkou"><input id="p-dan-zisk" type="text" value="15"><span class="jednotka">%</span></div></div>
+        </div>
+      </details>
+    </section>
+
+    <section class="karta" aria-live="polite" aria-labelledby="veta">
+      <p class="veta" id="veta" style="margin-top:0;font-size:20px;font-weight:700"></p>
+      <div class="trojice" style="margin-top:16px">
+        <div class="produkt" id="k-sporak"></div>
+        <div class="produkt" id="k-fond"></div>
+        <div class="produkt" id="k-etf"></div>
+      </div>
+    </section>
+
+    <section class="karta" aria-labelledby="nadpis-graf">
+      <h2 id="nadpis-graf">Kolik byste měli po jednotlivých letech</h2>
+      <div id="graf"></div>
+      <details class="tabulka">
+        <summary>Zobrazit tabulku</summary>
+        <div class="tabulka-obal"><table id="tabulka"></table></div>
+      </details>
+    </section>
+
+    <div class="poznamka">
+      <p style="margin:0 0 6px"><strong>Odkud jsou čísla (ověřeno v listopadu 2026):</strong></p>
+      <p style="margin:0 0 6px"><strong>Spořák:</strong> typický úrok velkých bank (ČS, KB, ČSOB) bez dalších produktů
+        banky je kolem 2 %. Banka z úroků strhává 15% daň.</p>
+      <p style="margin:0 0 6px"><strong>MONETA 2 konzervativní:</strong> vstupní poplatek 1,5 % a průběžné náklady 1,33 % ročně
+        podle dokumentu s klíčovými informacemi (KID) z 1. 4. 2026. Fond má jen asi čtvrtinu v akciích a zbytek hlavně
+        v dluhopisech. MONETA uvádí cílový výnos 3–5 % ročně a výkyvy jsou menší než u akcií.</p>
+      <p style="margin:0 0 6px"><strong>ETF SPYL přes XTB:</strong> roční náklady fondu 0,03 %. XTB nebere poplatek z objemu
+        majetku, ale 0,5 % za převod korun na dolary při nákupu i prodeji. 9,5 % je skutečný průměrný roční výnos
+        S&amp;P 500 s dividendami v korunách za posledních 30 let. <strong>Budoucnost může být lepší i horší.</strong></p>
+      <p style="margin:0"><strong>Daně:</strong> u fondu i ETF platí časový test. Co držíte déle než 3 roky, prodáte bez daně.
+        Kalkulačka počítá 15% daň jen ze zisku vkladů mladších 3 let ke dni prodeje.
+        Při stejném trhu ukazuje rozdíl mezi fondem a ETF čistý dopad poplatků.</p>
+    </div>
+
+    <footer class="paticka">
+      <p><strong>Nejde o investiční doporučení.</strong> Minulé výnosy nezaručují budoucí.
+        <a href="https://github.com/TomasMichal/kalkulacky">Zdrojový kód a data</a>.</p>
+    </footer>
+  </main>
+
+  <script type="module">
+    import { castka, kratce, procenta, roky, poLetech, ciselnePole, volby, carovyGraf, vyplnTabulku, prectiCislo, INFLACE_CR } from "./assets/spolecne.js";
+
+    const $ = (id) => document.getElementById(id);
+    const vstupRoky = $("roky");
+
+    const mesicne = ciselnePole($("mesicne"), { priZmene: () => { volbyMesicne.nastav(String(mesicne.hodnota())); prepocitej(); } });
+    const jednorazove = ciselnePole($("jednorazove"), { priZmene: () => { volbyJednorazove.nastav(String(jednorazove.hodnota())); prepocitej(); } });
+    const volbyMesicne = volby($("volby-mesicne"), (h) => { mesicne.nastav(Number(h)); prepocitej(); });
+    const volbyJednorazove = volby($("volby-jednorazove"), (h) => { jednorazove.nastav(Number(h)); prepocitej(); });
+    const volbyRezim = volby($("volby-rezim"), prepocitej);
+    vstupRoky.addEventListener("input", prepocitej);
+    $("inflace").addEventListener("change", prepocitej);
+
+    const procento = (id) => prectiCislo($(id).value) / 100;
+    for (const input of document.querySelectorAll(".predpoklady input")) {
+      input.setAttribute("inputmode", "decimal");
+      input.addEventListener("input", prepocitej);
+    }
+
+    /**
+     * Simulace po měsících s evidencí jednotlivých nákupů (kvůli časovému testu).
+     * rust = roční výnos před náklady, naklady = roční náklady z majetku,
+     * vstupni / konverzeNakup = srážka z každého vkladu, konverzeProdej = srážka při prodeji.
+     */
+    function simuluj({ vklad, mesicni, pocetLet, rust, naklady = 0, vstupni = 0, konverzeNakup = 0, konverzeProdej = 0, danZisku = 0 }) {
+      const g = Math.pow(1 + rust, 1 / 12) * Math.pow(1 - naklady, 1 / 12) - 1;
+      const nakupy = [];
+      if (vklad > 0) nakupy.push({ m: 0, vlozeno: vklad, cisty: vklad * (1 - vstupni) * (1 - konverzeNakup) });
+      for (let m = 1; m <= pocetLet * 12; m++) {
+        if (mesicni > 0) nakupy.push({ m, vlozeno: mesicni, cisty: mesicni * (1 - vstupni) * (1 - konverzeNakup) });
+      }
+      const body = [];
+      for (let rok = 0; rok <= pocetLet; rok++) {
+        const t = rok * 12;
+        let hruba = 0, vlozeno = 0, dan = 0;
+        for (const n of nakupy) {
+          if (n.m > t) break;
+          const v = n.cisty * Math.pow(1 + g, t - n.m) * (1 - konverzeProdej);
+          hruba += v;
+          vlozeno += n.vlozeno;
+          if (danZisku > 0 && t - n.m < 36) dan += danZisku * Math.max(0, v - n.vlozeno);
+        }
+        body.push({ rok, vlozeno, hodnota: hruba - dan, dan, hruba });
+      }
+      return body;
+    }
+
+    const BARVY = { sporak: "var(--s3)", fond: "var(--s2)", etf: "var(--s1)" };
+
+    const graf = carovyGraf($("graf"), {
+      delka: 2,
+      serie: [
+        { nazev: "Vloženo", barva: "var(--s0)", hodnoty: [0, 0], koncovyBod: false },
+        { nazev: "Spořák", barva: BARVY.sporak, hodnoty: [0, 0] },
+        { nazev: "Fond MONETA", barva: BARVY.fond, hodnoty: [0, 0] },
+        { nazev: "ETF S&P 500", barva: BARVY.etf, hodnoty: [0, 0] },
+      ],
+      titulek: (i) => (i === 0 ? "Začátek" : `Po ${i}. roce`),
+      tickyX: (sirka) => {
+        const n = Number(vstupRoky.value);
+        const krok = n <= 10 ? 1 : n <= 20 ? (sirka < 400 ? 5 : 2) : 5;
+        const t = [];
+        for (let r = 0; r <= n; r += krok) t.push({ i: r, text: r === 0 ? "dnes" : `${r}. rok` });
+        if (t[t.length - 1].i !== n) {
+          if (n - t[t.length - 1].i < krok / 2) t.pop();
+          t.push({ i: n, text: `${n}. rok` });
+        }
+        return t;
+      },
+    });
+
+    function vyplnKartu(el, { nazev, podnazev, barva, konec, poplatky, dane }) {
+      el.replaceChildren();
+      const hlava = document.createElement("div");
+      hlava.className = "hlavicka-produktu";
+      const klic = document.createElement("span");
+      klic.className = "klic";
+      klic.style.background = barva;
+      const jmeno = document.createElement("span");
+      jmeno.textContent = nazev;
+      hlava.append(klic, jmeno);
+      const pod = document.createElement("div");
+      pod.className = "napoveda";
+      pod.textContent = podnazev;
+      const vysledek = document.createElement("div");
+      vysledek.className = "vysledek";
+      vysledek.textContent = kratce(konec.hodnota);
+      const dl = document.createElement("dl");
+      const radky = [
+        ["Vloženo", castka(konec.vlozeno)],
+        ["Zhodnocení", castka(konec.hodnota - konec.vlozeno)],
+        ["Poplatky vás stály", castka(poplatky)],
+        ["Daně vás stály", castka(dane)],
+      ];
+      for (const [k, v] of radky) {
+        const dt = document.createElement("dt");
+        dt.textContent = k;
+        const dd = document.createElement("dd");
+        dd.textContent = v;
+        dl.append(dt, dd);
+      }
+      el.append(hlava, pod, vysledek, dl);
+    }
+
+    function prepocitej() {
+      const pocetLet = Number(vstupRoky.value);
+      const rezim = volbyRezim.hodnota();
+      const realne = $("inflace").checked;
+      $("roky-text").textContent = roky(pocetLet);
+      for (const el of document.querySelectorAll(".jen-skutecny-pole")) el.style.opacity = rezim === "skutecny" ? 1 : 0.5;
+      $("rezim-napoveda").textContent = rezim === "stejny"
+        ? `Fond i ETF vydělávají stejných ${procenta(procento("p-trh"), 1)} ročně. Rozdíl mezi nimi dělají jen poplatky.`
+        : `Fond ${procenta(procento("p-fond-vynos"), 1)} ročně po nákladech (cíl fondu 3–5 %), S&P 500 ${procenta(procento("p-etf-vynos"), 1)} (posledních 30 let v Kč).`;
+
+      const zaklad = { vklad: jednorazove.hodnota(), mesicni: mesicne.hodnota(), pocetLet };
+      const danZisku = procento("p-dan-zisk");
+      const urok = procento("p-sporak");
+      const danUroku = procento("p-dan-uroky");
+      const fondVstup = procento("p-fond-vstup");
+      const fondNaklady = procento("p-fond-naklady");
+      const etfNaklady = procento("p-etf-naklady");
+      const konverze = procento("p-konverze");
+
+      // Hrubý výnos (před náklady) pro fond a ETF podle režimu
+      const rustFond = rezim === "stejny" ? procento("p-trh") : (1 + procento("p-fond-vynos")) / (1 - fondNaklady) - 1;
+      const rustEtf = rezim === "stejny" ? procento("p-trh") : procento("p-etf-vynos");
+
+      const sporak = simuluj({ ...zaklad, rust: urok * (1 - danUroku) });
+      const sporakHruby = simuluj({ ...zaklad, rust: urok });
+      const fond = simuluj({ ...zaklad, rust: rustFond, naklady: fondNaklady, vstupni: fondVstup, danZisku });
+      const fondBezPoplatku = simuluj({ ...zaklad, rust: rustFond, danZisku: 0 });
+      const etf = simuluj({ ...zaklad, rust: rustEtf, naklady: etfNaklady, konverzeNakup: konverze, konverzeProdej: konverze, danZisku });
+      const etfBezPoplatku = simuluj({ ...zaklad, rust: rustEtf, danZisku: 0 });
+
+      const deflace = (rok) => (realne ? Math.pow(1 + INFLACE_CR, rok) : 1);
+      const uprav = (body) => body.map((b) => ({ ...b, vlozeno: b.vlozeno / deflace(b.rok), hodnota: b.hodnota / deflace(b.rok), hruba: b.hruba / deflace(b.rok), dan: b.dan / deflace(b.rok) }));
+      const S = uprav(sporak), SH = uprav(sporakHruby), F = uprav(fond), FB = uprav(fondBezPoplatku), E = uprav(etf), EB = uprav(etfBezPoplatku);
+      const k = pocetLet;
+
+      vyplnKartu($("k-sporak"), {
+        nazev: "Spořák velké banky", podnazev: `${procenta(urok, 1)} úrok, z toho ${procenta(danUroku)} daň`,
+        barva: BARVY.sporak, konec: S[k], poplatky: 0, dane: SH[k].hodnota - S[k].hodnota,
+      });
+      vyplnKartu($("k-fond"), {
+        nazev: "Fond MONETA 2 konzervativní", podnazev: `vstupní ${procenta(fondVstup, 1)} + ${procenta(fondNaklady, 2)} ročně`,
+        barva: BARVY.fond, konec: F[k], poplatky: FB[k].hruba - F[k].hruba, dane: F[k].dan,
+      });
+      vyplnKartu($("k-etf"), {
+        nazev: "ETF na S&P 500", podnazev: `${procenta(etfNaklady, 2)} ročně + ${procenta(konverze, 1)} převod měny`,
+        barva: BARVY.etf, konec: E[k], poplatky: EB[k].hruba - E[k].hruba, dane: E[k].dan,
+      });
+
+      const roz = E[k].hodnota - F[k].hodnota;
+      const vNasem = realne ? " v dnešních penězích" : "";
+      if (rezim === "stejny") {
+        $("veta").textContent = roz >= 0
+          ? `Při stejném vývoji trhu budete mít v ETF ${poLetech(pocetLet)} o ${kratce(roz)} víc než ve fondu${vNasem}. Tolik stojí poplatky z objemu.`
+          : `Při těchto předpokladech vychází fond lépe o ${kratce(-roz)}.`;
+      } else {
+        const rozS = E[k].hodnota - S[k].hodnota;
+        $("veta").textContent = `Kdyby se opakovala historie, měli byste v ETF o ${kratce(roz)} víc než ve fondu a o ${kratce(rozS)} víc než na spořáku${vNasem}.`;
+      }
+
+      graf.aktualizuj({
+        delka: k + 1,
+        popis: `Graf hodnoty po letech. Po ${roky(pocetLet)}: spořák ${kratce(S[k].hodnota)}, fond ${kratce(F[k].hodnota)}, ETF ${kratce(E[k].hodnota)}.`,
+        serie: [
+          { nazev: "Vloženo", barva: "var(--s0)", hodnoty: S.map((b) => b.vlozeno), koncovyBod: false },
+          { nazev: "Spořák", barva: BARVY.sporak, hodnoty: S.map((b) => b.hodnota) },
+          { nazev: "Fond MONETA", barva: BARVY.fond, hodnoty: F.map((b) => b.hodnota) },
+          { nazev: "ETF S&P 500", barva: BARVY.etf, hodnoty: E.map((b) => b.hodnota) },
+        ],
+      });
+
+      vyplnTabulku($("tabulka"), ["Rok", "Vloženo", "Spořák", "Fond MONETA", "ETF S&P 500"],
+        S.slice(1).map((b, i) => [String(b.rok), castka(b.vlozeno), castka(b.hodnota), castka(F[i + 1].hodnota), castka(E[i + 1].hodnota)]));
+    }
+
+    prepocitej();
+  </script>
+</body>
+</html>

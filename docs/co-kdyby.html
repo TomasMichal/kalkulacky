@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Co kdybych investoval v roce…</title>
+  <meta name="description" content="Vyberte rok a částku a zjistěte, jak by dopadla investice do S&amp;P 500 – i s propady po cestě.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styl.css">
+  <script src="assets/tema.js"></script>
+  <style>
+    .datum-vyber { display: grid; grid-template-columns: 1.3fr 1fr; gap: 8px; }
+  </style>
+</head>
+<body>
+  <main class="obal">
+    <div class="hlavicka">
+      <a class="zpet" href="./">← Všechny kalkulačky</a>
+      <span class="vpravo"><span class="znacka">Jak nechat peníze pracovat</span><button class="prepinac-tematu" type="button" hidden></button></span>
+    </div>
+    <h1>Co kdybych investoval v roce…</h1>
+    <p class="uvod">Vyberte, kdy byste začali a kolik byste vložili do amerického indexu S&amp;P 500.
+      Uvidíte, kolik byste měli dnes, a taky jak hluboko jste byli v nejhorší chvíli po cestě.</p>
+
+    <section class="karta" aria-labelledby="nadpis-zadani">
+      <h2 id="nadpis-zadani" class="skryte">Zadání</h2>
+      <div class="pole" style="margin-bottom:20px">
+        <span class="popisek" id="popisek-scenare">Zkuste známé okamžiky</span>
+        <div class="volby" id="volby-scenar" role="group" aria-labelledby="popisek-scenare">
+          <button data-hodnota="1994-07" aria-pressed="true">Premiéra Forresta Gumpa (1994)</button>
+          <button data-hodnota="2000-03">Vrchol internetové bubliny (2000)</button>
+          <button data-hodnota="2007-10">Těsně před finanční krizí (2007)</button>
+          <button data-hodnota="2020-02">Těsně před covidem (2020)</button>
+          <button data-hodnota="1929-09" data-doba="30">Těsně před krachem (1929)</button>
+        </div>
+      </div>
+      <div class="ovladani">
+        <div class="pole">
+          <span class="popisek" id="popisek-start">Začnu investovat</span>
+          <div class="datum-vyber" role="group" aria-labelledby="popisek-start">
+            <select id="mesic" aria-label="Měsíc"></select>
+            <select id="rok" aria-label="Rok"></select>
+          </div>
+        </div>
+        <div class="pole">
+          <span class="popisek" id="popisek-zpusob">Jak</span>
+          <div class="volby" id="volby-zpusob" role="group" aria-labelledby="popisek-zpusob">
+            <button data-hodnota="jednorazove" aria-pressed="true">Jednorázově</button>
+            <button data-hodnota="mesicne">Každý měsíc</button>
+          </div>
+        </div>
+        <div class="pole">
+          <label for="castka" id="castka-popisek">Částka</label>
+          <div class="s-jednotkou"><input id="castka" type="text" value="500000"><span class="jednotka" id="castka-jednotka">Kč</span></div>
+        </div>
+        <div class="pole">
+          <span class="popisek" id="popisek-mena">Měna</span>
+          <div class="volby" id="volby-mena" role="group" aria-labelledby="popisek-mena">
+            <button data-hodnota="CZK" aria-pressed="true">Koruny</button>
+            <button data-hodnota="USD">Dolary</button>
+          </div>
+          <p class="napoveda" id="mena-napoveda">Kurz koruny máme od roku 1993. Pro starší roky počítáme v dolarech.</p>
+        </div>
+        <div class="pole">
+          <span class="popisek" id="popisek-doba">Do kdy</span>
+          <div class="volby" id="volby-doba" role="group" aria-labelledby="popisek-doba">
+            <button data-hodnota="dnes" aria-pressed="true">Do dneška</button>
+            <button data-hodnota="10">10 let</button>
+            <button data-hodnota="20">20 let</button>
+            <button data-hodnota="30">30 let</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="karta" aria-live="polite" aria-labelledby="hero-popisek">
+      <p class="hero-popisek" id="hero-popisek"></p>
+      <p class="hero" id="hero"></p>
+      <div class="dlazdice">
+        <div><div class="nazev">Vložili jste</div><div class="cislo" id="t-vlozeno"></div><div class="detail" id="t-nasobek"></div></div>
+        <div><div class="nazev">Průměrně za rok</div><div class="cislo" id="t-rocne"></div><div class="detail" id="t-rocne-detail"></div></div>
+        <div><div class="nazev">Nejhorší chvíle po cestě</div><div class="cislo" id="t-nejhorsi"></div><div class="detail" id="t-nejhorsi-detail"></div></div>
+        <div><div class="nazev">Nejdéle v mínusu</div><div class="cislo" id="t-minus"></div><div class="detail" id="t-minus-detail"></div></div>
+      </div>
+    </section>
+
+    <section class="karta" aria-labelledby="nadpis-graf">
+      <h2 id="nadpis-graf">Jak by se hodnota vyvíjela</h2>
+      <div id="graf"></div>
+      <details class="tabulka">
+        <summary>Zobrazit tabulku (stav vždy v lednu)</summary>
+        <div class="tabulka-obal"><table id="tabulka"></table></div>
+      </details>
+    </section>
+
+    <p class="poznamka">Index S&amp;P 500 s reinvestovanými dividendami (data Roberta Shillera od roku 1871),
+      kurz koruny podle ČNB ke konci měsíce. Bez poplatků, daní a inflace.
+      <strong>Pozor:</strong> data jsou měsíční průměry, takže krátké propady vypadají mírněji, než byly.
+      Při covidu spadl trh během pár týdnů o 34 %, v měsíčních průměrech je to jen asi 19 %.
+      Minulé výnosy nezaručují budoucí.</p>
+
+    <footer class="paticka">
+      <p><strong>Nejde o investiční doporučení.</strong>
+        <a href="https://github.com/TomasMichal/kalkulacky">Zdrojový kód a data</a>.</p>
+    </footer>
+  </main>
+
+  <script type="module">
+    import { castka, kratce, procenta, cislo, delka, MESICE, ciselnePole, volby, carovyGraf, vyplnTabulku, nactiJSON } from "./assets/spolecne.js";
+
+    const $ = (id) => document.getElementById(id);
+    const MESICE_V = ["v lednu", "v únoru", "v březnu", "v dubnu", "v květnu", "v červnu",
+      "v červenci", "v srpnu", "v září", "v říjnu", "v listopadu", "v prosinci"];
+
+    const [sp, fx] = await Promise.all([nactiJSON("data/sp500.json"), nactiJSON("data/usdczk.json")]);
+    const [ROK0] = sp.od.split("-").map(Number);
+    const [FX_ROK0] = fx.od.split("-").map(Number);
+    const POSLEDNI = sp.tr.length - 1;
+    const index = (rok, mesic) => (rok - ROK0) * 12 + (mesic - 1);
+    const rokZ = (t) => ROK0 + Math.floor(t / 12);
+    const mesicZ = (t) => (t % 12) + 1;
+    const textMesice = (t) => `${MESICE[mesicZ(t) - 1]} ${rokZ(t)}`;
+    const FX0 = index(FX_ROK0, 1);
+    const kurz = (t) => fx.kurz[t - FX0];
+
+    // Výběr data
+    const vyberMesic = $("mesic");
+    const vyberRok = $("rok");
+    MESICE.forEach((m, i) => vyberMesic.add(new Option(m, String(i + 1))));
+    for (let r = rokZ(POSLEDNI) - 1; r >= ROK0; r--) vyberRok.add(new Option(String(r), String(r)));
+
+    const castkaPole = ciselnePole($("castka"), { priZmene: prepocitej, min: 1 });
+    const volbyZpusob = volby($("volby-zpusob"), (h) => { castkaPole.nastav(h === "mesicne" ? 15000 : 500000); prepocitej(); });
+    const volbyMena = volby($("volby-mena"), prepocitej);
+    const volbyDoba = volby($("volby-doba"), prepocitej);
+    const volbyScenar = volby($("volby-scenar"), (h) => {
+      // U krachu 1929 ukážeme 30 let, aby byl propad a návrat v grafu vidět
+      const tlacitko = $("volby-scenar").querySelector(`[data-hodnota="${h}"]`);
+      volbyDoba.nastav(tlacitko && tlacitko.dataset.doba ? tlacitko.dataset.doba : "dnes");
+      nastavStart(h);
+    });
+
+    function nastavStart(ym) {
+      const [r, m] = ym.split("-").map(Number);
+      vyberRok.value = String(r);
+      vyberMesic.value = String(m);
+      prepocitej();
+    }
+    vyberRok.addEventListener("change", () => { volbyScenar.nastav(null); prepocitej(); });
+    vyberMesic.addEventListener("change", () => { volbyScenar.nastav(null); prepocitej(); });
+
+    const graf = carovyGraf($("graf"), {
+      delka: 2,
+      serie: [
+        { nazev: "Vloženo", barva: "var(--s0)", hodnoty: [0, 0], koncovyBod: false },
+        { nazev: "Hodnota investice", barva: "var(--s1)", hodnoty: [0, 0], plocha: true },
+      ],
+    });
+
+    function irrMesicne(n, mesicni, konecna) {
+      // Nákupy v měsících 0..n, výsledná hodnota v měsíci n. Hledáme měsíční výnos r.
+      const g = (r) => {
+        let soucet = 0;
+        let f = 1;
+        for (let j = 0; j <= n; j++) { soucet += f; f *= 1 + r; }
+        return konecna - mesicni * soucet;
+      };
+      let lo = -0.5, hi = 0.5;
+      for (let k = 0; k < 80; k++) {
+        const mid = (lo + hi) / 2;
+        if (g(mid) > 0) lo = mid; else hi = mid;
+      }
+      return (lo + hi) / 2;
+    }
+
+    function prepocitej() {
+      const start = index(Number(vyberRok.value), Number(vyberMesic.value));
+      // Koruny jen od roku 1993
+      const korunyMozne = start >= FX0;
+      const tlacitkoKoruny = $("volby-mena").querySelector('[data-hodnota="CZK"]');
+      tlacitkoKoruny.disabled = !korunyMozne;
+      if (!korunyMozne && volbyMena.hodnota() === "CZK") volbyMena.nastav("USD");
+      const mena = volbyMena.hodnota();
+      $("mena-napoveda").style.display = korunyMozne ? "none" : "block";
+      $("castka-jednotka").textContent = mena === "CZK" ? "Kč" : "USD";
+      const zpusob = volbyZpusob.hodnota();
+      $("castka-popisek").textContent = zpusob === "mesicne" ? "Každý měsíc vložím" : "Jednorázově vložím";
+
+      // Doba
+      for (const t of $("volby-doba").querySelectorAll("button")) {
+        if (t.dataset.hodnota !== "dnes") t.disabled = start + Number(t.dataset.hodnota) * 12 > POSLEDNI;
+      }
+      if (volbyDoba.hodnota() !== "dnes" && start + Number(volbyDoba.hodnota()) * 12 > POSLEDNI) volbyDoba.nastav("dnes");
+      const konec = volbyDoba.hodnota() === "dnes" ? POSLEDNI : start + Number(volbyDoba.hodnota()) * 12;
+
+      const A = castkaPole.hodnota();
+      const prevod = (t) => (mena === "CZK" ? kurz(t) : 1);
+      const hodnoty = [];
+      const vlozeno = [];
+      let jednotky = 0;
+      let vlozenoCelkem = 0;
+      for (let t = start; t <= konec; t++) {
+        if (zpusob === "jednorazove" ? t === start : true) {
+          jednotky += A / prevod(t) / sp.tr[t];
+          vlozenoCelkem += A;
+        }
+        hodnoty.push(jednotky * sp.tr[t] * prevod(t));
+        vlozeno.push(vlozenoCelkem);
+      }
+      const n = hodnoty.length;
+      const vysledek = hodnoty[n - 1];
+      const vlozenoKonec = vlozeno[n - 1];
+      const M = mena === "CZK" ? "Kč" : "USD";
+
+      // Nejhorší chvíle vůči vloženým penězům a nejdelší období v mínusu
+      let nejhorsi = 0, nejhorsiI = 0, souvisle = 0, nejdele = 0, nejdeleKonec = -1;
+      for (let i = 0; i < n; i++) {
+        const pomer = hodnoty[i] / vlozeno[i] - 1;
+        if (pomer < nejhorsi) { nejhorsi = pomer; nejhorsiI = i; }
+        if (pomer < 0) { souvisle++; if (souvisle > nejdele) { nejdele = souvisle; nejdeleKonec = i; } } else souvisle = 0;
+      }
+
+      $("hero-popisek").textContent = `${MESICE_V[mesicZ(konec) - 1].replace(/^v/, "V")} ${rokZ(konec)} byste měli`;
+      $("hero").textContent = kratce(vysledek, M);
+      $("t-vlozeno").textContent = kratce(vlozenoKonec, M);
+      $("t-nasobek").textContent = `hodnota je ${cislo(vysledek / vlozenoKonec, 1)}× víc než vklad`;
+
+      const mesicu = konec - start;
+      if (mesicu < 12) {
+        $("t-rocne").textContent = "—";
+        $("t-rocne-detail").textContent = "méně než rok";
+      } else if (zpusob === "jednorazove") {
+        $("t-rocne").textContent = procenta(Math.pow(vysledek / A, 12 / mesicu) - 1, 1, true);
+        $("t-rocne-detail").textContent = `po dobu ${delka(mesicu)}`;
+      } else {
+        const r = irrMesicne(mesicu, A, vysledek);
+        $("t-rocne").textContent = procenta(Math.pow(1 + r, 12) - 1, 1, true);
+        $("t-rocne-detail").textContent = "z každé koruny, po dobu, kdy byla investovaná";
+      }
+
+      if (nejhorsi < 0) {
+        $("t-nejhorsi").textContent = procenta(nejhorsi, 0, true);
+        $("t-nejhorsi-detail").textContent = `pod vloženými penězi (${textMesice(start + nejhorsiI)})`;
+        $("t-minus").textContent = delka(nejdele);
+        const zpet = nejdeleKonec + 1 < n ? `pak už zase v plusu (${textMesice(start + nejdeleKonec + 1)})` : "a pořád to trvá";
+        $("t-minus-detail").textContent = zpet;
+      } else {
+        $("t-nejhorsi").textContent = "nikdy pod vkladem";
+        $("t-nejhorsi-detail").textContent = "ani jednou jste nebyli v mínusu";
+        $("t-minus").textContent = "0 měsíců";
+        $("t-minus-detail").textContent = "";
+      }
+
+      const rozpeti = n / 12;
+      const krokLet = rozpeti <= 8 ? 1 : rozpeti <= 20 ? 5 : rozpeti <= 60 ? 10 : 20;
+      graf.aktualizuj({
+        delka: n,
+        popis: `Graf: investice od ${textMesice(start)} do ${textMesice(konec)}. Vloženo ${kratce(vlozenoKonec, M)}, výsledek ${kratce(vysledek, M)}.`,
+        formatHodnoty: (v) => kratce(v, M),
+        titulek: (i) => textMesice(start + i),
+        serie: [
+          { nazev: "Vloženo", barva: "var(--s0)", hodnoty: vlozeno, koncovyBod: false },
+          { nazev: "Hodnota investice", barva: "var(--s1)", hodnoty, plocha: true },
+        ],
+        znacky: nejhorsi < 0 ? [{ serie: 1, i: nejhorsiI, text: "nejhorší chvíle" }] : [],
+        tickyX: (sirka) => {
+          const ticky = [];
+          const krok = sirka < 420 && krokLet < 5 ? 2 : sirka < 420 ? krokLet * 2 : krokLet;
+          for (let i = 0; i < n; i++) {
+            const t = start + i;
+            const r = rokZ(t);
+            if (mesicZ(t) === 1 && r % krok === 0) ticky.push({ i, text: String(r) });
+          }
+          if (ticky.length && ticky[0].i < n * 0.06) ticky.shift();
+          return ticky;
+        },
+      });
+
+      const radky = [];
+      for (let i = 0; i < n; i++) {
+        if (mesicZ(start + i) === 1 || i === 0 || i === n - 1) {
+          radky.push([textMesice(start + i), castka(vlozeno[i], M), castka(hodnoty[i], M), procenta(hodnoty[i] / vlozeno[i] - 1, 0, true)]);
+        }
+      }
+      vyplnTabulku($("tabulka"), ["Měsíc", "Vloženo", "Hodnota", "Zisk / ztráta"], radky);
+    }
+
+    nastavStart("1994-07");
+  </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Složené úročení</title>
+  <meta name="description" content="Kalkulačka složeného úročení: kolik budete mít, když budete pravidelně investovat.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styl.css">
+  <script src="assets/tema.js"></script>
+</head>
+<body>
+  <main class="obal">
+    <div class="hlavicka">
+      <a class="zpet" href="./">← Všechny kalkulačky</a>
+      <span class="vpravo"><span class="znacka">Jak nechat peníze pracovat</span><button class="prepinac-tematu" type="button" hidden></button></span>
+    </div>
+    <h1>Složené úročení</h1>
+    <p class="uvod">Úroky z úroků. Na začátku rostou peníze hlavně tím, co vložíte. Po letech začnou
+      vydělávat víc než vy. Tomu se říká sněhová koule.</p>
+
+    <section class="karta" aria-labelledby="nadpis-zadani">
+      <h2 id="nadpis-zadani" class="skryte">Zadání</h2>
+      <div class="ovladani">
+        <div class="pole">
+          <label for="mesicne">Každý měsíc vložím</label>
+          <div class="s-jednotkou"><input id="mesicne" type="text" value="15000"><span class="jednotka">Kč</span></div>
+          <div class="volby" id="volby-mesicne" aria-label="Rychlá volba měsíční částky">
+            <button data-hodnota="0">0</button>
+            <button data-hodnota="10000">10 000</button>
+            <button data-hodnota="15000" aria-pressed="true">15 000</button>
+            <button data-hodnota="20000">20 000</button>
+          </div>
+        </div>
+        <div class="pole">
+          <label for="jednorazove">Na začátku vložím jednorázově</label>
+          <div class="s-jednotkou"><input id="jednorazove" type="text" value="0"><span class="jednotka">Kč</span></div>
+          <div class="volby" id="volby-jednorazove" aria-label="Rychlá volba jednorázového vkladu">
+            <button data-hodnota="0" aria-pressed="true">0</button>
+            <button data-hodnota="500000">500 000</button>
+          </div>
+        </div>
+        <div class="pole">
+          <div class="radek-popisku"><label for="roky">Jak dlouho</label><span class="hodnota" id="roky-text"></span></div>
+          <input id="roky" type="range" min="1" max="40" step="1" value="30">
+        </div>
+        <div class="pole">
+          <div class="radek-popisku"><label for="vynos">Roční výnos</label><span class="hodnota" id="vynos-text"></span></div>
+          <input id="vynos" type="range" min="0" max="12" step="0.1" value="9.5">
+          <div class="volby" id="volby-vynos" aria-label="Rychlá volba výnosu">
+            <button data-hodnota="1.7">Spořák velkých bank 1,7 %</button>
+            <button data-hodnota="7">Opatrný odhad 7 %</button>
+            <button data-hodnota="9.5" aria-pressed="true">S&amp;P 500 za 30 let 9,5 %</button>
+          </div>
+        </div>
+      </div>
+      <p style="margin:18px 0 0">
+        <label class="zaskrtavatko"><input type="checkbox" id="inflace">Ukázat v dnešních penězích (odečíst inflaci 3,1 % ročně)</label>
+      </p>
+    </section>
+
+    <section class="karta" aria-live="polite" aria-labelledby="hero-popisek">
+      <p class="hero-popisek" id="hero-popisek"></p>
+      <p class="hero" id="hero"></p>
+      <div class="dlazdice">
+        <div><div class="nazev">Vložíte vy</div><div class="cislo" id="t-vlozeno"></div></div>
+        <div><div class="nazev">Přidají samotné peníze</div><div class="cislo" id="t-vynos"></div><div class="detail" id="t-vynos-detail"></div></div>
+        <div><div class="nazev">Sněhová koule se rozjede</div><div class="cislo" id="t-koule"></div><div class="detail" id="t-koule-detail"></div></div>
+        <div><div class="nazev">Pravidlo 72</div><div class="cislo" id="t-72"></div><div class="detail">za tak dlouho se peníze zdvojnásobí</div></div>
+      </div>
+    </section>
+
+    <section class="karta" aria-labelledby="nadpis-graf">
+      <h2 id="nadpis-graf">Jak hodnota roste rok po roce</h2>
+      <div id="graf"></div>
+      <details class="tabulka">
+        <summary>Zobrazit tabulku</summary>
+        <div class="tabulka-obal"><table id="tabulka"></table></div>
+      </details>
+    </section>
+
+    <p class="poznamka">Výpočet: vklady na konci každého měsíce, měsíční zhodnocení odvozené z ročního výnosu.
+      Bez poplatků a daní. 9,5 % je skutečný průměrný roční výnos indexu S&amp;P 500 s dividendami v korunách
+      za posledních 30 let (1996–2026). <strong>Budoucnost může být lepší i horší.</strong>
+      Inflace 3,1 % je průměr ČR za roky 2001–2025.</p>
+
+    <footer class="paticka">
+      <p><strong>Nejde o investiční doporučení.</strong> Minulé výnosy nezaručují budoucí.
+        <a href="https://github.com/TomasMichal/kalkulacky">Zdrojový kód a data</a>.</p>
+    </footer>
+  </main>
+
+  <script type="module">
+    import { castka, kratce, osa, procenta, cislo, roky, ciselnePole, volby, carovyGraf, vyplnTabulku, INFLACE_CR } from "./assets/spolecne.js";
+
+    const $ = (id) => document.getElementById(id);
+    const vstupRoky = $("roky");
+    const vstupVynos = $("vynos");
+    const vstupInflace = $("inflace");
+
+    const mesicne = ciselnePole($("mesicne"), { priZmene: () => { volbyMesicne.nastav(String(mesicne.hodnota())); prepocitej(); } });
+    const jednorazove = ciselnePole($("jednorazove"), { priZmene: () => { volbyJednorazove.nastav(String(jednorazove.hodnota())); prepocitej(); } });
+    const volbyMesicne = volby($("volby-mesicne"), (h) => { mesicne.nastav(Number(h)); prepocitej(); });
+    const volbyJednorazove = volby($("volby-jednorazove"), (h) => { jednorazove.nastav(Number(h)); prepocitej(); });
+    const volbyVynos = volby($("volby-vynos"), (h) => { vstupVynos.value = h; prepocitej(); });
+
+    vstupRoky.addEventListener("input", prepocitej);
+    vstupVynos.addEventListener("input", () => { volbyVynos.nastav(String(Number(vstupVynos.value))); prepocitej(); });
+    vstupInflace.addEventListener("change", prepocitej);
+
+    function simuluj(vklad, mesicni, pocetLet, vynos) {
+      const m = Math.pow(1 + vynos, 1 / 12) - 1;
+      let hodnota = vklad;
+      let vlozeno = vklad;
+      const body = [{ rok: 0, vlozeno, hodnota }];
+      for (let mes = 1; mes <= pocetLet * 12; mes++) {
+        hodnota = hodnota * (1 + m) + mesicni;
+        vlozeno += mesicni;
+        if (mes % 12 === 0) body.push({ rok: mes / 12, vlozeno, hodnota });
+      }
+      return body;
+    }
+
+    const graf = carovyGraf($("graf"), {
+      delka: 2,
+      skladany: true,
+      serie: [
+        { nazev: "Vložíte vy", barva: "var(--s0)", hodnoty: [0, 0], plocha: true, pruhlednost: 0.22, koncovyBod: false },
+        { nazev: "Přidají samotné peníze", barva: "var(--s1)", hodnoty: [0, 0], plocha: true, pruhlednost: 0.16 },
+      ],
+      titulek: (i) => (i === 0 ? "Začátek" : `Po ${i}. roce`),
+      formatHodnoty: (v) => kratce(v),
+      tickyX: (sirka) => {
+        const n = Number(vstupRoky.value);
+        const krok = n <= 10 ? 1 : n <= 20 ? (sirka < 400 ? 5 : 2) : 5;
+        const t = [];
+        for (let r = 0; r <= n; r += krok) t.push({ i: r, text: r === 0 ? "dnes" : `${r}. rok` });
+        if (t[t.length - 1].i !== n) t.push({ i: n, text: `${n}. rok` });
+        if (t.length > 1 && t[t.length - 1].i - t[t.length - 2].i < krok / 2) t.splice(t.length - 2, 1);
+        return t;
+      },
+    });
+
+    function prepocitej() {
+      const pocetLet = Number(vstupRoky.value);
+      const vynos = Number(vstupVynos.value) / 100;
+      const realne = vstupInflace.checked;
+      $("roky-text").textContent = roky(pocetLet);
+      $("vynos-text").textContent = procenta(vynos, 1);
+
+      const surove = simuluj(jednorazove.hodnota(), mesicne.hodnota(), pocetLet, vynos);
+      const body = surove.map((b) => {
+        const k = realne ? Math.pow(1 + INFLACE_CR, b.rok) : 1;
+        return { rok: b.rok, vlozeno: b.vlozeno / k, hodnota: b.hodnota / k };
+      });
+      const konec = body[body.length - 1];
+      const vynosKc = konec.hodnota - konec.vlozeno;
+
+      $("hero-popisek").textContent = `Za ${roky(pocetLet)} budete mít${realne ? " (v dnešních penězích)" : ""}`;
+      $("hero").textContent = kratce(konec.hodnota);
+      $("t-vlozeno").textContent = kratce(konec.vlozeno);
+      $("t-vynos").textContent = kratce(Math.max(0, vynosKc));
+      $("t-vynos-detail").textContent = konec.hodnota > 0 ? `${procenta(Math.max(0, vynosKc) / konec.hodnota)} z celkové částky` : "";
+
+      // Rok, kdy roční zhodnocení poprvé převýší roční vklady.
+      const rocniVklad = mesicne.hodnota() * 12;
+      let koule = null;
+      if (rocniVklad > 0) {
+        for (let i = 1; i < surove.length; i++) {
+          const zhodnoceni = surove[i].hodnota - surove[i - 1].hodnota - rocniVklad;
+          if (zhodnoceni > rocniVklad) { koule = i; break; }
+        }
+      }
+      if (rocniVklad === 0) {
+        $("t-koule").textContent = "—";
+        $("t-koule-detail").textContent = "zadejte měsíční vklad";
+      } else if (koule) {
+        $("t-koule").textContent = `${koule}. rok`;
+        $("t-koule-detail").textContent = "od té doby peníze za rok vydělají víc, než sami vložíte";
+      } else {
+        $("t-koule").textContent = "zatím ne";
+        $("t-koule-detail").textContent = "zkuste delší dobu nebo vyšší výnos";
+      }
+      $("t-72").textContent = vynos > 0 ? `≈ ${cislo(72 / (vynos * 100), 1)} roku` : "nikdy";
+
+      graf.aktualizuj({
+        delka: body.length,
+        popis: `Graf: za ${roky(pocetLet)} vložíte ${kratce(konec.vlozeno)}, celková hodnota ${kratce(konec.hodnota)}.`,
+        serie: [
+          { nazev: "Vložíte vy", barva: "var(--s0)", hodnoty: body.map((b) => b.vlozeno), plocha: true, pruhlednost: 0.22, koncovyBod: false },
+          { nazev: "Přidají samotné peníze", barva: "var(--s1)", hodnoty: body.map((b) => Math.max(0, b.hodnota - b.vlozeno)), plocha: true, pruhlednost: 0.16 },
+        ],
+        extraRadky: (i) => [{ nazev: "celkem", hodnota: kratce(body[i].hodnota) }],
+      });
+
+      vyplnTabulku($("tabulka"), ["Rok", "Vloženo", "Přidaly peníze", "Celkem"],
+        body.slice(1).map((b) => [String(b.rok), castka(b.vlozeno), castka(b.hodnota - b.vlozeno), castka(b.hodnota)]));
+    }
+
+    prepocitej();
+  </script>
+</body>
+</html>

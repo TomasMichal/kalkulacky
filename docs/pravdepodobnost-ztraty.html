@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Pravděpodobnost ztráty</title>
+  <meta name="description" content="Jak se s délkou držení mění šance, že investice do S&amp;P 500 skončí ve ztrátě. Data od roku 1871.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styl.css">
+  <script src="assets/tema.js"></script>
+  <style>
+    .posuvnik-popisky { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); font-weight: 700; }
+    .doba { font-size: 28px; font-weight: 900; color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main class="obal">
+    <div class="hlavicka">
+      <a class="zpet" href="./">← Všechny kalkulačky</a>
+      <span class="vpravo"><span class="znacka">Jak nechat peníze pracovat</span><button class="prepinac-tematu" type="button" hidden></button></span>
+    </div>
+    <h1>Je to hazard?</h1>
+    <p class="uvod">Kdybyste koupili americký index S&amp;P 500 v kterémkoli měsíci od roku 1871,
+      jak často byste po určité době byli ve ztrátě? Posuňte jezdcem a sledujte, co dělá čas.</p>
+
+    <section class="karta" aria-labelledby="popisek-doby">
+      <div class="ovladani">
+        <div class="pole">
+          <div class="radek-popisku"><label for="doba" id="popisek-doby">Jak dlouho investici držím</label></div>
+          <div class="doba" id="doba-text" aria-hidden="true"></div>
+          <input id="doba" type="range" min="0" max="33" step="1" value="4">
+          <div class="posuvnik-popisky" aria-hidden="true"><span>1 den</span><span>10 let</span><span>30 let</span></div>
+        </div>
+        <div class="pole">
+          <span class="popisek" id="popisek-inflace">Počítat</span>
+          <div class="volby" id="volby-inflace" role="group" aria-labelledby="popisek-inflace">
+            <button data-hodnota="nominalne" aria-pressed="true">Bez inflace</button>
+            <button data-hodnota="realne">Po odečtení inflace</button>
+          </div>
+          <p class="napoveda">Po odečtení inflace = jestli si za peníze koupíte víc, než když jste je investovali.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="karta" aria-live="polite" aria-labelledby="hero-popisek">
+      <p class="hero-popisek" id="hero-popisek"></p>
+      <p class="hero" id="hero"></p>
+      <p class="veta" id="veta" style="margin-top:4px"></p>
+      <div class="dlazdice">
+        <div><div class="nazev">Nejhorší případ v historii</div><div class="cislo" id="t-nejhorsi"></div><div class="detail" id="t-nejhorsi-detail"></div></div>
+        <div><div class="nazev">Typický výsledek (medián)</div><div class="cislo" id="t-median"></div><div class="detail" id="t-median-detail"></div></div>
+        <div><div class="nazev">Nejlepší případ v historii</div><div class="cislo" id="t-nejlepsi"></div><div class="detail" id="t-nejlepsi-detail"></div></div>
+        <div><div class="nazev">Ze 100 000 Kč v nejhorším případě</div><div class="cislo" id="t-sto"></div><div class="detail" id="t-sto-detail"></div></div>
+      </div>
+    </section>
+
+    <section class="karta" aria-labelledby="nadpis-graf">
+      <h2 id="nadpis-graf">Šance na ztrátu podle délky držení</h2>
+      <p class="napoveda" style="margin-bottom:8px">Klikněte na sloupec pro podrobnosti.</p>
+      <div id="graf"></div>
+      <details class="tabulka">
+        <summary>Zobrazit tabulku</summary>
+        <div class="tabulka-obal"><table id="tabulka"></table></div>
+      </details>
+    </section>
+
+    <p class="poznamka">Index S&amp;P 500 s reinvestovanými dividendami, v dolarech, bez poplatků a daní.
+      Pro měsíce a roky jsou to všechna klouzavá období z dat Roberta Shillera od ledna 1871 do října 2026
+      (měsíční průměry cen). Pro 1 den jsou to denní data od roku 1928. Inflace podle amerického CPI.
+      Pro českého investora navíc hraje roli kurz koruny k dolaru: viz kalkulačka
+      <a href="co-kdyby.html">Co kdybych investoval v roce…</a>. Minulost nezaručuje budoucnost.</p>
+
+    <footer class="paticka">
+      <p><strong>Nejde o investiční doporučení.</strong>
+        <a href="https://github.com/TomasMichal/kalkulacky">Zdrojový kód a výpočty</a>.</p>
+    </footer>
+  </main>
+
+  <script type="module">
+    import { procenta, castka, cislo, mesicRok, datum, roky, mesice, sklonuj, volby, sloupcovyGraf, vyplnTabulku, nactiJSON } from "./assets/spolecne.js";
+
+    const $ = (id) => document.getElementById(id);
+    const data = await nactiJSON("data/ztrata.json");
+    const R = data.radky;
+    const vstupDoba = $("doba");
+    vstupDoba.max = String(R.length - 1);
+
+    const nazevDoby = (mes) => (mes === 0 ? "1 den" : mes < 12 ? mesice(mes) : roky(mes / 12));
+    // "po 1 dni", "po 3 měsících", "po 1 roce", "po 20 letech"
+    const poDobe = (mes) => {
+      if (mes === 0) return "po 1 dni";
+      if (mes < 12) return mes === 1 ? "po 1 měsíci" : `po ${mes} měsících`;
+      const r = mes / 12;
+      return r === 1 ? "po 1 roce" : `po ${r} letech`;
+    };
+    const kdyStart = (s) => (!s ? "" : s.length > 7 ? datum(s) : mesicRok(s));
+
+    const volbyInflace = volby($("volby-inflace"), prekresli);
+    vstupDoba.addEventListener("input", prekresli);
+
+    const KRATKE = { 0: "1 den", 12: "1 rok", 60: "5", 120: "10", 180: "15", 240: "20", 300: "25", 360: "30 let" };
+    const graf = sloupcovyGraf($("graf"), {
+      popisky: R.map((r) => nazevDoby(r.mesicu)),
+      hodnoty: R.map((r) => r.nominalne.p),
+      vybrany: Number(vstupDoba.value),
+      maxY: 0.5,
+      // Na úzkém displeji se "1 rok" nevejde vedle "1 den", vybraný sloupec má vlastní štítek
+      popisOsyX: (i, pas) => (R[i].mesicu === 12 && pas < 14 ? null : KRATKE[R[i].mesicu] ?? null),
+      bublina: (i) => ({
+        titulek: `Držení ${nazevDoby(R[i].mesicu)}`,
+        radky: [{ hodnota: procenta(R[i][volbyInflace.hodnota()].p, 1), nazev: "případů ve ztrátě" }],
+      }),
+      stitekVybraneho: (i) => procenta(R[i][volbyInflace.hodnota()].p),
+      priVyberu: (i) => { vstupDoba.value = String(i); prekresli(); },
+    });
+
+    function prekresli() {
+      const i = Number(vstupDoba.value);
+      const rezim = volbyInflace.hodnota();
+      const r = R[i];
+      const d = r[rezim];
+      const mes = r.mesicu;
+      $("doba-text").textContent = nazevDoby(mes);
+      vstupDoba.setAttribute("aria-valuetext", nazevDoby(mes));
+
+      const poDobeVelke = poDobe(mes).replace(/^po/, "Po");
+      $("hero-popisek").textContent = `${poDobeVelke} držení S&P 500 skončilo ve ztrátě${rezim === "realne" ? " (po odečtení inflace)" : ""}`;
+      $("hero").textContent = `${procenta(d.p, d.p < 0.01 && d.p > 0 ? 1 : 0)} případů`;
+      let veta;
+      if (d.p === 0) veta = `Za více než 150 let historie se to nestalo ani jednou.`;
+      else if (d.p < 0.05) veta = `Stalo se to jen výjimečně, zhruba v ${cislo(d.p * 100, 1)} ze 100 případů.`;
+      else veta = `To je zhruba ${cislo(d.p * 10, 1)} z 10 případů. Ve zbytku jste byli v plusu.`;
+      if (mes === 0) veta += " Den po dni je to skoro hod mincí. Proto se na akcie nedívejte každý den.";
+      $("veta").textContent = veta;
+
+      const maDetaily = d.nejhorsi !== undefined;
+      const rocne = (x) => (x !== undefined && mes >= 24 ? `${procenta(x, 1, true)} ročně` : "");
+      if (maDetaily) {
+        $("t-nejhorsi").textContent = procenta(d.nejhorsi, 0, true);
+        $("t-nejhorsi-detail").textContent = [`start ${kdyStart(d.nejhorsiStart)}`, rocne(d.nejhorsiRocne)].filter(Boolean).join(" · ");
+        $("t-median").textContent = procenta(d.median, d.median < 0.1 ? 1 : 0, true);
+        $("t-median-detail").textContent = rocne(d.medianRocne) || "polovina případů dopadla lépe, polovina hůř";
+        $("t-nejlepsi").textContent = procenta(d.nejlepsi, 0, true);
+        $("t-nejlepsi-detail").textContent = [`start ${kdyStart(d.nejlepsiStart)}`, rocne(d.nejlepsiRocne)].filter(Boolean).join(" · ");
+        $("t-sto").textContent = castka(100000 * (1 + d.nejhorsi));
+        $("t-sto-detail").textContent = d.nejhorsi >= 0 ? "i v nejhorším případě víc, než jste vložili" : "a to je ten úplně nejhorší start v historii";
+      } else {
+        for (const id of ["t-nejhorsi", "t-median", "t-nejlepsi", "t-sto"]) $(id).textContent = "—";
+        for (const id of ["t-nejhorsi-detail", "t-median-detail", "t-nejlepsi-detail", "t-sto-detail"]) $(id).textContent = "pro 1 den po inflaci nespočítáno";
+      }
+
+      graf.aktualizuj({
+        hodnoty: R.map((x) => x[rezim].p),
+        vybrany: i,
+        popis: `Sloupcový graf pravděpodobnosti ztráty podle délky držení. Vybráno: ${nazevDoby(mes)}, ${procenta(d.p, 1)} případů ve ztrátě.`,
+      });
+
+      vyplnTabulku($("tabulka"), ["Doba držení", "Ve ztrátě", "Nejhorší", "Medián", "Nejlepší"],
+        R.map((x) => {
+          const y = x[rezim];
+          return [nazevDoby(x.mesicu), procenta(y.p, 1),
+            y.nejhorsi !== undefined ? procenta(y.nejhorsi, 0, true) : "—",
+            y.median !== undefined ? procenta(y.median, 1, true) : "—",
+            y.nejlepsi !== undefined ? procenta(y.nejlepsi, 0, true) : "—"];
+        }));
+    }
+
+    prekresli();
+  </script>
+</body>
+</html>

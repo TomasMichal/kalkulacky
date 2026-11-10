@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Jak nechat peníze pracovat</title>
+  <meta name="description" content="Čtyři jednoduché kalkulačky o dlouhodobém investování: složené úročení, spořák vs. fond vs. ETF, co kdybych investoval v roce X a pravděpodobnost ztráty.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styl.css">
+  <script src="assets/tema.js"></script>
+</head>
+<body>
+  <main class="obal">
+    <div class="hlavicka"><span></span><button class="prepinac-tematu" type="button" hidden></button></div>
+    <h1>Jak nechat peníze pracovat</h1>
+    <p class="uvod">Čtyři jednoduché kalkulačky k rodinné prezentaci o dlouhodobém investování.
+      Všechno se počítá přímo ve vašem prohlížeči ze skutečných historických dat. Nic nikam neodesíláte.</p>
+
+    <div class="rozcestnik">
+      <a class="dlazdice-nastroje" href="slozene-uroceni.html">
+        <span class="ikona" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="16" r="5"/><circle cx="12" cy="7.5" r="3.5"/><path d="M10.5 7h.01M13.5 7h.01"/></svg>
+        </span>
+        <h2>Složené úročení</h2>
+        <p>Jak z pravidelných vkladů vyroste sněhová koule. Kolik vložíte vy a kolik přidají samotné peníze.</p>
+        <span class="odkaz">Spočítat →</span>
+      </a>
+
+      <a class="dlazdice-nastroje" href="sporak-fond-etf.html">
+        <span class="ikona" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V13M12 20V9M19 20V4"/><path d="M3 20h18"/></svg>
+        </span>
+        <h2>Spořák vs. fond vs. ETF</h2>
+        <p>Stejné peníze třemi cestami. Kolik spolknou poplatky z objemu a kolik daně.</p>
+        <span class="odkaz">Porovnat →</span>
+      </a>
+
+      <a class="dlazdice-nastroje" href="co-kdyby.html">
+        <span class="ikona" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 15l2.5 2.5L16 13"/></svg>
+        </span>
+        <h2>Co kdybych investoval v roce…</h2>
+        <p>Vyberte si rok a částku a zjistěte, jak by to dopadlo. I s propady, které by vás po cestě čekaly.</p>
+        <span class="odkaz">Vyzkoušet →</span>
+      </a>
+
+      <a class="dlazdice-nastroje" href="pravdepodobnost-ztraty.html">
+        <span class="ikona" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        </span>
+        <h2>Pravděpodobnost ztráty</h2>
+        <p>Je to hazard? Podívejte se, jak se s délkou držení mění šance, že budete v mínusu.</p>
+        <span class="odkaz">Podívat se →</span>
+      </a>
+    </div>
+
+    <footer class="paticka">
+      <p><strong>Nejde o investiční doporučení.</strong> Minulé výnosy nezaručují budoucí. Kalkulačky slouží
+        k pochopení principů, ne k předpovídání.</p>
+      <p>Data: Robert Shiller (S&amp;P 500 od roku 1871), Česká národní banka (kurz koruny), ČSÚ (inflace),
+        ceníky bank a fondů ověřené v listopadu 2026.
+        <a href="https://github.com/TomasMichal/kalkulacky">Zdrojový kód a výpočty na GitHubu</a>.</p>
+    </footer>
+  </main>
+</body>
+</html>
