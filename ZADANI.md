@@ -37,7 +37,9 @@ a akcie bere jako hazard.
 | Formát | PowerPoint (.pptx) |
 | Předání | Osobně na TV/projektoru: málo textu, velké vizuály, poznámky pro řečníka v každém slajdu |
 | Délka | 45+ minut včetně živé ukázky u brokera |
-| Vizuální styl | Ilustrativní a hravý: ikony, přirovnání z běžného života |
+| Vizuální styl | Ilustrativní a hravý: ikony v kruzích, zaoblené karty, mince. Tmavě modrý titul, teplé světlé pozadí jako web |
+| Písmo | **Avenir Next** (nadpisy i text). Je na každém Macu a má češtinu. Arial Rounded MT Bold česká písmena nemá |
+| Generátor | `prezentace/vytvor.js` (pptxgenjs), `cd prezentace && npm run build` |
 | Nástroj | Index (ETF na S&P 500) jako základ + jednotlivé velké firmy |
 | Doporučený poměr | **50 % ETF / 50 % akcie velkých firem** |
 | ETF | **SPYL** (SPDR S&P 500 UCITS ETF Acc, IE000XZSV718, TER 0,03 %, akumulační) |
